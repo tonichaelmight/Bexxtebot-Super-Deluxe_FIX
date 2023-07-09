@@ -56,7 +56,7 @@ const bexxteConfig = {
     "Let's not pole dance",
     "I walk where I go!",
     "Is this racism?",
-    "I won\'t try to be a nice person."
+    "I won\'t try to be a nice person.",
   ],
 
   michaelQuotes: [
@@ -66,7 +66,7 @@ const bexxteConfig = {
     'being a child is often a severe handicap',
     'Pisscourse :tm: ',
     'i rarely dream of crustaceans',
-    'sometimes the whimsy is fun'
+    'sometimes the whimsy is fun',
   ],
 
   prideEmotes: [
@@ -85,7 +85,7 @@ const bexxteConfig = {
     'bexxteApride',
     'bexxteTpride',
     'bexxtePpride',
-    'bexxteIpride'
+    'bexxteIpride',
   ],
 
   validations: [
@@ -94,13 +94,13 @@ const bexxteConfig = {
     'You are important!',
     'You are beautiful!',
     'You a boss ass bitch!',
-    'You\'re doing great sweatie!!'
+    'You\'re doing great sweatie!!',
   ],
 
   forbidden: [
     'reylo',
     'bigfollows',
-    'chilp.it'
+    'chilp.it',
   ],
 
   dwarvenVows: [
@@ -108,13 +108,13 @@ const bexxteConfig = {
     'Dwarven Vow #2: Never abandon someone in need.',
     'Dwarven Vow #4: Don\'t depend on others. Walk on your own two legs.',
     'Dwarven Vow #7: Goodness and love will always win.',
-    'Dwarven Vow #11: Lying is the first step down the path of thievery.'
+    'Dwarven Vow #11: Lying is the first step down the path of thievery.',
   ],
 
   socials: {
     twitter: 'https://twitter.com/Bexterkins',
     tiktok: 'https://www.tiktok.com/@bexxtersttv',
-    youtube: 'https://www.youtube.com/@thebexxters'
+    youtube: 'https://www.youtube.com/@thebexxters',
   }
 
 }
