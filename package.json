@@ -1,0 +1,17 @@
+{
+  "name": "bexxtebot-super-deluxe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bexxtebot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "node-fetch": "^3.3.1",
+    "tmi.js": "^1.8.5"
+  },
+  "type": "module"
+}
