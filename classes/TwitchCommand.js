@@ -177,13 +177,13 @@ export class TwitchCounterCommand extends TwitchCommand {
 
     let currentCounts;
     try {
-      currentCounts = JSON.parse(readFileSync(`./streamers/${this.streamerLink.username}/counts.json`, 'utf-8'));
+      currentCounts = JSON.parse(readFileSync(`./counts.json`, 'utf-8'));
     } catch(e) {
       currentCounts = {};
     }
     currentCounts[this.name] = newValue;
 
-    writeFileSync(`./streamers/${this.streamerLink.username}/counts.json`, JSON.stringify(currentCounts));
+    writeFileSync(`./counts.json`, JSON.stringify(currentCounts));
     return true;
   }
 
@@ -191,11 +191,11 @@ export class TwitchCounterCommand extends TwitchCommand {
 
     let currentCounts;
     try {
-      currentCounts = JSON.parse(readFileSync(`./streamers/${this.streamerLink.username}/counts.json`, 'utf-8'));
+      currentCounts = JSON.parse(readFileSync(`./counts.json`, 'utf-8'));
     } catch(e) {
       currentCounts = {};
       currentCounts[this.name] = 0;
-      writeFileSync(`./streamers/${this.streamerLink.username}/counts.json`, JSON.stringify(currentCounts));
+      writeFileSync(`./counts.json`, JSON.stringify(currentCounts));
     }
 
     return currentCounts[this.name] || 0;

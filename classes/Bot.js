@@ -54,7 +54,7 @@ export default class Bot {
   // moderates twitch messages
   moderateTwitchMessage(twitchMessage) {
     if (twitchMessage.needsModeration()) {
-      this.streamers[twitchMessage.channel.slice(1)].config.forbidden.forEach(word => {
+      this.streamer.config.forbidden.forEach(word => {
         if (twitchMessage.content.includes(word)) {
           twitchMessage.addResponse(
             `Naughty naughty, @${twitchMessage.tags.username}! We don't use that word here!`,
@@ -161,7 +161,7 @@ export default class Bot {
   }
 
   startTimers() {
-    //console.log(this.streamers);
+    //console.log(this.streamer);
       this.streamer.timers.forEach(timer => {
         timer.start();
       })
