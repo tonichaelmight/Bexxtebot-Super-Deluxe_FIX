@@ -18,15 +18,6 @@ export default class Streamer {
     this.bot = bot;
   }
 
-  // for commands that require a direct link to the Streamer object they fall under
-  linkCommandsToStreamer(commands) {
-    for (const command in commands) {
-      if (commands[command].streamerLink) {
-        commands[command].streamerLink = this;
-      }
-    }
-  }
-
   // for commands that can be triggered by multiple base commands
   addCommandAliases(commands) {
     for (const command in commands) {

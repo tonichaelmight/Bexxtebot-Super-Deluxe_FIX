@@ -9,7 +9,6 @@ export default class Bot {
     this.name = name;
     this.channel = channel;
     this.token = token;
-
     this.streamer = new Streamer(this.channel, commands, timers, config, this);
   }
 
@@ -37,15 +36,10 @@ export default class Bot {
       const twitchMessage = new TwitchMessage(channel, tags, message, self);
 
       try {
-
         // there are no errors expected here, so if something does happen it gets logged in error.txt and we keep the program running (otherwise bexxteBot stops :/ )
-
         await this.processTwitchMessage(twitchMessage);
-
       } catch (error) {
-
         logError(error);
-
       }
 
     })
@@ -70,7 +64,6 @@ export default class Bot {
 
     // lurk is built different; can be used anywhere in a message, not just the beginning
     const lurkCheck = /(?<!(\w))!lurk(?!(\w))/;
-
     if (lurkCheck.test(twitchMessage.content)) {
       return 'lurk';
     }
@@ -81,10 +74,8 @@ export default class Bot {
     }
 
     const messageWords = twitchMessage.content.split(' ');
-
     // get first word and remove the "!"
     const command = messageWords[0].slice(1);
-
     return command;
 
   }
@@ -146,7 +137,6 @@ export default class Bot {
     }
 
     const command = await this.searchForTwitchCommand(twitchMessage);
-
     await this.executeTwitchCommand(twitchMessage, command);
 
     // only speak if she has something to say

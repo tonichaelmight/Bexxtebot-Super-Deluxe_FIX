@@ -74,17 +74,13 @@ export class TwitchCallbackCommand extends TwitchCommand {
     }
 
     try {
-
       // pass the message object if the command needs to reference it
       this.options.refsMessage ? messageObject.addResponse(this.callback(messageObject)) : messageObject.addResponse(this.callback());
-      
     } catch (e) {
-
       logError(e);
-
     }
-  }
 
+  }
 }
 
 // Commands that use an asynchronous callback function
@@ -106,15 +102,10 @@ export class AsyncTwitchCallbackCommand extends TwitchCallbackCommand {
     }
 
     try {
-
       this.options.refsMessage ? messageObject.addResponse(await this.callback(messageObject)) : messageObject.addResponse(await this.callback());
-
     } catch (e) {
-
       logError(e);
-
     }
-
   }
 
 }
@@ -124,9 +115,7 @@ export class TwitchCounterCommand extends TwitchCommand {
   // Current work
   constructor(name, outputs, options={}) {
     super(name, undefined, options);
-    
     this.outputs = outputs;
-    this.streamerLink = true;
   }
 
   evaluateMessage(messageObject) {
