@@ -7,7 +7,7 @@ export default class Streamer {
   constructor(username, commands, timers, config, bot) {
     this.username = username.startsWith('#') ? username.slice(1) : username;
     this.commands = commands;
-    this.linkCommandsToStreamer(this.commands);
+   
     this.addCommandAliases(this.commands);
     this.timers = timers;
     this.timers.forEach(timer => {
