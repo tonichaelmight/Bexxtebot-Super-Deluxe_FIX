@@ -5,9 +5,9 @@ const bexxteConfig = {
   botName: 'bexxtebot',
 
   schedule: {
-    SUN: "Night Security",
-    MON: "Coming Out on Top (discord)",
-    TUES: "Peppa Pig runs",
+    SUN: "",
+    MON: "No One Lives Under The Lighthouse",
+    TUES: "Save Room",
     WEDS: "Crisis Core Remake",
     THURS: "Tales/???",
     FRI: "",

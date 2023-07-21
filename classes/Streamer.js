@@ -73,7 +73,7 @@ export default class Streamer {
           streamerData = channelData;
 
         } catch (e) {
-          // if the data comes in multiple chunks, the initial attempts will fail since the data is incomplete. Throws "SyntaxError: Unexpected end of JSON input"
+          // if the data come in multiple chunks, the initial attempts will fail since the data is incomplete. Throws "SyntaxError: Unexpected end of JSON input"
           // this can be ignored
           if (!(e.name === 'SyntaxError' && e.message === 'Unexpected end of JSON input')) {
             logError(e);
