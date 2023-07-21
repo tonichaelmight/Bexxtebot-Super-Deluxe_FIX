@@ -5,11 +5,11 @@ export default class TwitchMessage {
     this.channel = channel;
     this.tags = tags;
     this.content = message.toLowerCase();
-    this.self = self || tags.username.match(/bexxtebot/i);
+    this.self = self || Array.isArray(tags.username.match(/bexxtebot/i));
   }
 
   needsModeration() {
-    return !(this.tags.mod || (this.tags.badges && this.tags.badges.vip) || this.tags.username === this.channel.slice(1));
+    return !(this.tags.mod || this.tags.badges?.vip || this.tags.username === this.channel.slice(1));
   }
 
   addResponse(output, mean=false) {

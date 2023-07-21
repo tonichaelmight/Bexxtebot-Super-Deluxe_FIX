@@ -4,7 +4,7 @@
   "description": "",
   "main": "bexxtebot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,5 +13,8 @@
     "node-fetch": "^3.3.1",
     "tmi.js": "^1.8.5"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "jest": "^29.6.1"
+  }
 }
