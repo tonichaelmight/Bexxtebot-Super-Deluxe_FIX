@@ -1,4 +1,4 @@
-import TwitchMessage from '../classes/TwitchMessage.js';
+import TwitchMessage from '../classes/TwitchMessage';
 
 const testMessage1 = new TwitchMessage('#bexxtebot', {username: 'tonichaelmight', mod: true}, 'hi');
 const testMessage2 = new TwitchMessage('#bexxtebot', {username: 'tonichaelmight', mod: false}, 'hello', false);
@@ -16,7 +16,7 @@ test('returns an object with "channel", "tags", "content", and "self" properties
     });
 });
 
-test('each property of the returned object holds the correct values', () => {
+test('each property of the returned object holds the correct value', () => {
     expect(testMessage1.channel).toStrictEqual('#bexxtebot');
     expect(testMessage1.tags).toStrictEqual({username: 'tonichaelmight', mod: true});
     expect(testMessage1.content).toStrictEqual('hi');
