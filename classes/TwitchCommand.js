@@ -33,7 +33,7 @@ export class TwitchCommand {
 
   execute(messageObject) {
     // don't execute if the user is not a mod and the command is mod-only or on cooldown
-    if (!messageObject.tags.mod && !(messageObject.tags.username === messageObject.channel.slice(1))) {
+    if (messageObject.needsModeration()) {
       if (this.options.modOnly || this.onCooldown) {
         return;
       }
@@ -63,7 +63,7 @@ export class TwitchCallbackCommand extends TwitchCommand {
   }
 
   execute(messageObject) {
-    if (!messageObject.tags.mod && !(messageObject.tags.username === messageObject.channel.slice(1))) {
+    if (messageObject.needsModeration()) {
       if (this.options.modOnly || this.onCooldown) {
         return;
       }
@@ -91,7 +91,7 @@ export class AsyncTwitchCallbackCommand extends TwitchCallbackCommand {
   }
 
   async execute(messageObject) {
-    if (!messageObject.tags.mod && !(messageObject.tags.username === messageObject.channel.slice(1))) {
+    if (messageObject.needsModeration()) {
       if (this.options.modOnly || this.onCooldown) {
         return;
       }
@@ -124,7 +124,7 @@ export class TwitchCounterCommand extends TwitchCommand {
     const evaluation = {};
 
     if (command === this.name) {
-      if (messageObject.tags.mod || messageObject.tags.username === messageObject.channel.slice(1)) {
+      if (!messageObject.needsModeration()) {
         // !test set
         if (messageWords[1] === 'set') {
           evaluation.action = 'set';
