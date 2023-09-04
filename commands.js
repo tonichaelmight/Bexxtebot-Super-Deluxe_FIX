@@ -253,7 +253,7 @@ const commands = {
     async () => {
       let streamerData;
       try {
-        streamerData = await Streamer.getCurrentStreamerData(bexxteConfig.channelName);
+        streamerData = await Streamer.getCurrentStreamerData(bexxteConfig.broadcastingChannel);
       } catch (e) {
         logError(e);
       }

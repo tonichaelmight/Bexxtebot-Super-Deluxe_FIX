@@ -1,20 +1,20 @@
 const bexxteConfig = {
 
-  channelName: 'bexxters',
+  broadcastingChannel: 'bexxters',
 
   botName: 'bexxtebot',
 
   schedule: {
-    SUN: "",
-    MON: "No One Lives Under The Lighthouse",
-    TUES: "Save Room",
-    WEDS: "Crisis Core Remake",
-    THURS: "Tales/???",
+    SUN: "Parasocial",
+    MON: "",
+    TUES: "DBD",
+    WEDS: "TBD",
+    THURS: "TBD",
     FRI: "",
     SAT: ""
   },
 
-  playlist: 'https://www.youtube.com/watch?v=sEkH_cJacbA',
+  playlist: 'https://www.youtube.com/watch?v=l01V4aU5xcE',
 
   contentWarning: '',
 
