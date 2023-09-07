@@ -5,12 +5,12 @@ const bexxteConfig = {
   botName: 'bexxtebot',
 
   schedule: {
-    SUN: "Parasocial",
+    SUN: "",
     MON: "",
-    TUES: "DBD",
-    WEDS: "TBD",
-    THURS: "TBD",
-    FRI: "",
+    TUES: "Spyro",
+    WEDS: "PS2 Horror",
+    THURS: "Dead Space Remake",
+    FRI: "???",
     SAT: ""
   },
 
