@@ -39,7 +39,7 @@ export default class Timer {
 
         let dummyMessage;
 
-        if (/*live && currentGame === this.options.gameTitle*/ true) {
+        if (live && currentGame === this.options.gameTitle) {
           let previous = this.streamer.cache.getTimerCache(this.name);
           let i = this.getRandomIndex();
           while (previous.includes(i)) {
