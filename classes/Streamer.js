@@ -1,6 +1,7 @@
 import { BEXXTEBOT_TOKEN, CLIENT_ID } from '../ev.js';
 import https from 'https';
 import { logError } from '../utils.js';
+import Cache from './Cache.js';
 
 export default class Streamer {
 
@@ -9,14 +10,22 @@ export default class Streamer {
     this.commands = commands;
    
     this.addCommandAliases(this.commands);
+    for (const command in this.commands) {
+      this.commands[command].streamer = this;
+    }
+    // console.log(this.commands);
+
     this.timers = timers;
     this.timers.forEach(timer => {
       timer.streamer = this;
     });
-    //console.log(commands);
+
     this.config = config;
     this.bot = bot;
+
+    this.cache = new Cache('cache.json');
   }
+
 
   // for commands that can be triggered by multiple base commands
   addCommandAliases(commands) {

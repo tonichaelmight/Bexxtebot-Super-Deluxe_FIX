@@ -2,6 +2,7 @@ import { logError } from './utils.js';
 import { TwitchCommand, TwitchCallbackCommand, AsyncTwitchCallbackCommand, TwitchCounterCommand } from './classes/TwitchCommand.js';
 import Streamer from './classes/Streamer.js';
 import bexxteConfig from './configuration.js';
+import 'fs';
 
 const commands = {
 
@@ -65,7 +66,26 @@ const commands = {
   // EXCEPT HER
 
   michael: new TwitchCallbackCommand('michael',
-    () => `Humor King tonichaelmight aka my best friend for over half my life??? we're old. As he once said: "${bexxteConfig.michaelQuotes[Math.floor(Math.random() * bexxteConfig.michaelQuotes.length)]}"`
+    function() {
+      let currentCache = this.streamer.cache.getCommandCache(this.name);
+      const michaelQuotes = bexxteConfig.michaelQuotes;
+      let i;
+      do {
+        i = Math.floor(Math.random() * michaelQuotes.length);
+      } while (currentCache.includes(i));
+
+      let cacheLimit = Math.ceil(michaelQuotes.length / 3);
+      if (cacheLimit === michaelQuotes.length) cacheLimit--;
+      currentCache.push(i);
+
+      while (currentCache.length > cacheLimit) {
+        currentCache.shift();
+      }
+
+      this.streamer.cache.setCommandCache(this.name, currentCache);
+
+      return `Humor King tonichaelmight aka my best friend for over half my life??? we're old. As he once said: "${bexxteConfig.michaelQuotes[i]}"`;
+    }
   ),
 
   // CALLBACK COMMANDS
@@ -106,7 +126,26 @@ const commands = {
   ),
 
   quote: new TwitchCallbackCommand('quote',
-    () => bexxteConfig.quotes[Math.floor(Math.random() * bexxteConfig.quotes.length)]
+    function() {
+      let currentCache = this.streamer.cache.getCommandCache(this.name);
+      const bekkaQuotes = bexxteConfig.quotes;
+      let i;
+      do {
+        i = Math.floor(Math.random() * bekkaQuotes.length);
+      } while (currentCache.includes(i));
+
+      let cacheLimit = Math.ceil(bekkaQuotes.length / 3);
+      if (cacheLimit === bekkaQuotes.length) cacheLimit--;
+      currentCache.push(i);
+
+      while (currentCache.length > cacheLimit) {
+        currentCache.shift();
+      }
+
+      this.streamer.cache.setCommandCache(this.name, currentCache);
+      
+      return bexxteConfig.quotes[i];
+    }
   ),
 
   raiding: new TwitchCallbackCommand('raiding',

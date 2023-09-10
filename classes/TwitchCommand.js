@@ -163,31 +163,16 @@ export class TwitchCounterCommand extends TwitchCommand {
     if (Number.isNaN(newValue * 1)) {
       return false;
     }
-
-    let currentCounts;
-    try {
-      currentCounts = JSON.parse(readFileSync(`./counts.json`, 'utf-8'));
-    } catch(e) {
-      currentCounts = {};
-    }
-    currentCounts[this.name] = newValue;
-
-    writeFileSync(`./counts.json`, JSON.stringify(currentCounts));
+    
+    this.streamer.cache.setCountCache(this.name, newValue);
     return true;
   }
 
   getValue() {
 
-    let currentCounts;
-    try {
-      currentCounts = JSON.parse(readFileSync(`./counts.json`, 'utf-8'));
-    } catch(e) {
-      currentCounts = {};
-      currentCounts[this.name] = 0;
-      writeFileSync(`./counts.json`, JSON.stringify(currentCounts));
-    }
+    let currentCacheValue = this.streamer.cache.getCountCache(this.name, 0);
 
-    return currentCounts[this.name] || 0;
+    return currentCacheValue;
   }
 
   async execute(messageObject) {

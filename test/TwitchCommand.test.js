@@ -1,5 +1,5 @@
 import { TwitchCommand } from "../classes/TwitchCommand";
-import TwitchMessage from '../classes/TwitchMessage';
+import TwitchMessage from '../classes/TwitchMessage'; 
 
 const tc1 = new TwitchCommand('shelby', 'hi this is shelby');
 const tc2 = new TwitchCommand('renee', 'hi this is renee', {cooldown_ms: 500})

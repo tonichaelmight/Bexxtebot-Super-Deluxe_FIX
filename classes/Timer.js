@@ -2,7 +2,8 @@ import TwitchMessage from './TwitchMessage.js';
 
 // TIMER CLASS
 export default class Timer {
-  constructor(min, range, options={}) {
+  constructor(name, min, range, options={}) {
+    this.name = name;
     this.min = min;
     this.range = range;
 
@@ -11,7 +12,11 @@ export default class Timer {
     this.options.gameTitle = options.gameTitle || undefined;
     this.options.outputs = options.outputs || undefined;
 
-    this.previous = [];
+    const numChoices = this.options.commands?.length || this.options.outputs?.length || undefined;
+    if (!numChoices) throw new Error('something is wrong!');
+
+    this.maxCacheStorage = Math.ceil(numChoices / 3);
+    if (this.maxCacheStorage === numChoices) this.maxCacheStorage--;
   }
 
   getRandomIndex() {
@@ -34,9 +39,10 @@ export default class Timer {
 
         let dummyMessage;
 
-        if (live && currentGame === this.options.gameTitle) {
+        if (/*live && currentGame === this.options.gameTitle*/ true) {
+          let previous = this.streamer.cache.getTimerCache(this.name);
           let i = this.getRandomIndex();
-          while (this.previous.includes(i)) {
+          while (previous.includes(i)) {
             i = this.getRandomIndex();
           }
 
@@ -51,14 +57,16 @@ export default class Timer {
             throw new Error('Timer has no commands or outputs');
           }
 
-          this.previous.push(i);
+          previous.push(i);
 
-          if (this.previous.length > 3) {
-            this.previous.shift();
+          while (previous.length > this.maxCacheStorage) {
+            previous.shift();
           }
+
+          this.streamer.cache.setTimerCache(this.name, previous);
         } else {
-          // resets the previous array for next stream
-          this.previous = [];
+          // resets the cached array for next stream
+          this.streamer.cache.setTimerCache(this.name, []);
           dummyMessage = null;
         }
         
