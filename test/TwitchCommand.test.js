@@ -9,7 +9,7 @@ const tc4 = new TwitchCommand('jasper', 'hi this is jasper', {modOnly: true, coo
 const tc5 = new TwitchCommand('bella', 'hi this is bella', {aliases: 'bellabie'});
 const tc6 = new TwitchCommand('edward', 'hi this is edward', {aliases: ['edwina', 'eduardo']})
 
-test('returns an object with "name", "commandText", "options.cooldown_ms", and "options.modOnly" properties', () => {
+test('returns an object with "name", "commandText", "onCooldown", "options.cooldown_ms", and "options.modOnly" properties', () => {
     const tcs = [tc1, tc2, tc3, tc4, tc5, tc6]
 
     tcs.forEach(tc => {
