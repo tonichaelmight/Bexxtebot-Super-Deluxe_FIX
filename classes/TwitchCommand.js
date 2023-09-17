@@ -1,6 +1,5 @@
 // if you're trying to make a new command, this is the right page; scroll down a bit further
 import { logError } from '../utils.js';
-import { readFileSync, writeFileSync } from 'fs';
 
 // Basic commands will yield the same output every time they are executed -- foundation for more specialized command types
 export class TwitchCommand {
@@ -31,17 +30,26 @@ export class TwitchCommand {
     }, this.options.cooldown_ms);
   }
 
-  execute(messageObject) {
+  quitFromModeration(messageObject) {
     // don't execute if the user is not a mod and the command is mod-only or on cooldown
     if (messageObject.needsModeration()) {
       if (this.options.modOnly || this.onCooldown) {
-        return;
+        return true;
       }
     }
+    return false;
+  }
 
+  triggerCooldown() {
     if (this.options.cooldown_ms) {
       this.createCooldown();
     }
+  }
+
+  execute(messageObject) {
+    if (this.quitFromModeration(messageObject)) return;
+
+    this.triggerCooldown();
 
     try {
       messageObject.addResponse(this.commandText);
@@ -63,15 +71,9 @@ export class TwitchCallbackCommand extends TwitchCommand {
   }
 
   execute(messageObject) {
-    if (messageObject.needsModeration()) {
-      if (this.options.modOnly || this.onCooldown) {
-        return;
-      }
-    }
+    if (this.quitFromModeration(messageObject)) return;
 
-    if (this.options.cooldown_ms) {
-      this.createCooldown();
-    }
+    this.triggerCooldown();
 
     try {
       // pass the message object if the command needs to reference it
@@ -91,15 +93,9 @@ export class AsyncTwitchCallbackCommand extends TwitchCallbackCommand {
   }
 
   async execute(messageObject) {
-    if (messageObject.needsModeration()) {
-      if (this.options.modOnly || this.onCooldown) {
-        return;
-      }
-    }
+    if (this.quitFromModeration(messageObject)) return;
 
-    if (this.options.cooldown_ms) {
-      this.createCooldown();
-    }
+    this.triggerCooldown();
 
     try {
       this.options.refsMessage ? messageObject.addResponse(await this.callback(messageObject)) : messageObject.addResponse(await this.callback());
@@ -176,11 +172,7 @@ export class TwitchCounterCommand extends TwitchCommand {
   }
 
   async execute(messageObject) {
-    if (!messageObject.tags.mod && !(messageObject.tags.username === messageObject.channel.slice(1))) {
-      if (this.modOnly || this.onCooldown) {
-        return;
-      }
-    }
+    if (this.quitFromModeration(messageObject)) return;
 
     let evaluation;
 
@@ -188,9 +180,7 @@ export class TwitchCounterCommand extends TwitchCommand {
       evaluation = this.evaluateMessage(messageObject);
     }
 
-    if (this.cooldown_ms) {
-      this.createCooldown();
-    }
+    this.triggerCooldown();
 
     try {
       if (!evaluation) {
