@@ -83,6 +83,7 @@ export default class Bot {
   async executeTwitchCommand(twitchMessage, command) {
     // check if command exists for streamer
     if (this.streamer.commands[command]) {
+
       // call the command's execute() method
       await this.streamer.commands[command].execute(twitchMessage);
     }
@@ -128,8 +129,9 @@ export default class Bot {
 
   // passes twitch messages through moderation and then looks for a command. sends a response message in twitch if one is created
   async processTwitchMessage(twitchMessage) {
+    
     this.moderateTwitchMessage(twitchMessage);
-
+    
     if (twitchMessage.response) {
       this.speakInTwitch(twitchMessage);
       // if a message gets modded, any commands will be ignored

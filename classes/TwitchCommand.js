@@ -37,12 +37,13 @@ export class TwitchCommand {
   }
 
   quitFromModeration(messageObject) {
-    // don't execute if the user is not a mod and the command is mod-only or on cooldown
-    if (!messageObject.tags.mod) {
-      if (this.options.modOnly || this.onCooldown) {
-        return true;
-      }
+    // mods and broadcaster should not be modded
+    if (messageObject.tags.mod || messageObject.tags.username === messageObject.channel.slice(1)) return false;
+    // for normies, if it's mod only or is on cooldown, quit
+    if (this.options.modOnly || this.onCooldown) {
+      return true;
     }
+    // otherwise, let it through!
     return false;
   }
 
@@ -74,12 +75,13 @@ export class AsyncTwitchCommand extends TwitchCommand {
   }
 
   async execute(messageObject) {
+
     if (this.quitFromModeration(messageObject)) return;
 
     this.triggerCooldown();
 
     try {
-      this.options.refsMessage ? messageObject.addResponse(await this.callback(messageObject)) : messageObject.addResponse(await this.callback());
+      this.options.refsMessage ? messageObject.addResponse(await this.outputFunction(messageObject)) : messageObject.addResponse(await this.outputFunction());
     } catch (e) {
       logError(e);
     }

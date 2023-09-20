@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 const writeToErrorFile = (content) => {
-  fs.appendFile('error.txt', content, appendError => {
+  fs.appendFile('./logs/error.txt', content, appendError => {
     if (appendError) throw appendError;
   });
 }
