@@ -1,5 +1,5 @@
 import { logError } from './utils.js';
-import { TwitchCommand, TwitchCallbackCommand, AsyncTwitchCallbackCommand, TwitchCounterCommand } from './classes/TwitchCommand.js';
+import { TwitchCommand, AsyncTwitchCommand, TwitchCounterCommand } from './classes/TwitchCommand.js';
 import Streamer from './classes/Streamer.js';
 import bexxteConfig from './configuration.js';
 import 'fs';
@@ -65,7 +65,7 @@ const commands = {
 
   // EXCEPT HER
 
-  michael: new TwitchCallbackCommand('michael',
+  michael: new TwitchCommand('michael',
     function() {
       let currentCache = this.streamer.cache.getCommandCache(this.name);
       const michaelQuotes = bexxteConfig.michaelQuotes;
@@ -90,28 +90,28 @@ const commands = {
 
   // CALLBACK COMMANDS
 
-  cw: new TwitchCallbackCommand('cw',
+  cw: new TwitchCommand('cw',
     () => bexxteConfig.contentWarning || 'The streamer has not designated any content warnings for this game.'
   ),
 
-  lurk: new TwitchCallbackCommand('lurk',
+  lurk: new TwitchCommand('lurk',
     (messageObject) => `${messageObject.tags.username} is now lurkin in the chat shadows. Stay awhile and enjoy! bexxteCozy`,
     { refsMessage: true }),
 
-  music: new TwitchCallbackCommand('music',
+  music: new TwitchCommand('music',
     () => bexxteConfig.playlist ? `Today's playlist is ${bexxteConfig.playlist}` : 'this bitch empty, yeet'
   ),
 
-  mute: new TwitchCallbackCommand('mute',
+  mute: new TwitchCommand('mute',
     messageObject => [`@${messageObject.channel.slice(1).toUpperCase()} HEY QUEEN 👸👸👸 YOU'RE MUTED`, `@${messageObject.channel.slice(1).toUpperCase()} HEY QUEEN 👸👸👸 YOU'RE MUTED`, `@${messageObject.channel.slice(1).toUpperCase()} HEY QUEEN 👸👸👸 YOU'RE MUTED`],
     { refsMessage: true, aliases: ['muted'] }
   ),
 
-  pitbull: new TwitchCallbackCommand('pitbull',
+  pitbull: new TwitchCommand('pitbull',
     () => Math.floor(Math.random() * 2) === 0 ? 'Dale!' : 'Believe me, been there done that. But everyday above ground is a great day, remember that.'
   ),
 
-  pride: new TwitchCallbackCommand('pride',
+  pride: new TwitchCommand('pride',
     () => {
       let emoteString = '';
       let randNum;
@@ -125,7 +125,7 @@ const commands = {
     }
   ),
 
-  quote: new TwitchCallbackCommand('quote',
+  quote: new TwitchCommand('quote',
     function() {
       let currentCache = this.streamer.cache.getCommandCache(this.name);
       const bekkaQuotes = bexxteConfig.quotes;
@@ -148,7 +148,7 @@ const commands = {
     }
   ),
 
-  raiding: new TwitchCallbackCommand('raiding',
+  raiding: new TwitchCommand('raiding',
     (messageObject) => {
       let raidingMessage = '';
 
@@ -177,7 +177,7 @@ const commands = {
     { refsMessage: true, cooldown_ms: 0, modOnly: true }
   ),
 
-  schedule: new TwitchCallbackCommand('schedule',
+  schedule: new TwitchCommand('schedule',
     () => {
       const days = ['SUN', 'MON', 'TUES', 'WEDS', 'THURS', 'FRI', 'SAT'];
       let responseString = '';
@@ -199,7 +199,7 @@ const commands = {
     }
   ),
 
-  validate: new TwitchCallbackCommand('validate',
+  validate: new TwitchCommand('validate',
     (messageObject) => {
       const getRandomValidationIndex = () => {
         return Math.floor(Math.random() * bexxteConfig.validations.length);
@@ -228,7 +228,7 @@ const commands = {
   // ASYNC CALLBACK COMMANDS
 
   // shoutout command
-  so: new AsyncTwitchCallbackCommand('so',
+  so: new AsyncTwitchCommand('so',
     async messageObject => {
       let recipient = messageObject.content.split(' ')[1];
       let output;
@@ -288,7 +288,7 @@ const commands = {
     { refsMessage: true, modOnly: true, cooldown_ms: 0 }
   ),
 
-  uptime: new AsyncTwitchCallbackCommand('uptime',
+  uptime: new AsyncTwitchCommand('uptime',
     async () => {
       let streamerData;
       try {

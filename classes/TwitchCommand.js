@@ -4,9 +4,13 @@ import { logError } from '../utils.js';
 // Basic commands will yield the same output every time they are executed -- foundation for more specialized command types
 export class TwitchCommand {
 
-  constructor(name, commandText, options={}) {
+  constructor(name, output, options={}) {
     this.name = name;
-    this.commandText = commandText;
+    if (typeof output === 'function') {
+      this.outputFunction = output;
+    } else {
+      this.outputFunction = () => output;
+    }
 
     this.options = {};
     this.options.cooldown_ms = options.cooldown_ms !== undefined ? options.cooldown_ms : 10000; // default cooldown is 10 sec
@@ -21,6 +25,8 @@ export class TwitchCommand {
     }
 
     this.onCooldown = false;
+
+    this.options.refsMessage = options.refsMessage || false;
   }
 
   createCooldown() {
@@ -32,7 +38,7 @@ export class TwitchCommand {
 
   quitFromModeration(messageObject) {
     // don't execute if the user is not a mod and the command is mod-only or on cooldown
-    if (messageObject.needsModeration()) {
+    if (!messageObject.tags.mod) {
       if (this.options.modOnly || this.onCooldown) {
         return true;
       }
@@ -52,44 +58,19 @@ export class TwitchCommand {
     this.triggerCooldown();
 
     try {
-      messageObject.addResponse(this.commandText);
-    } catch (e) {
-      logError(e);
-    }
-  }
-}
-
-// Commands that do more than just yield the same text every time
-export class TwitchCallbackCommand extends TwitchCommand {
-
-  constructor(name, callback, options={}) {
-    super(name, undefined, options);
-    delete this.commandText;
-    this.callback = callback;
-
-    this.options.refsMessage = options.refsMessage || false;
-  }
-
-  execute(messageObject) {
-    if (this.quitFromModeration(messageObject)) return;
-
-    this.triggerCooldown();
-
-    try {
       // pass the message object if the command needs to reference it
-      this.options.refsMessage ? messageObject.addResponse(this.callback(messageObject)) : messageObject.addResponse(this.callback());
+      this.options.refsMessage ? messageObject.addResponse(this.outputFunction(messageObject)) : messageObject.addResponse(this.outputFunction());
     } catch (e) {
       logError(e);
     }
-
   }
 }
 
 // Commands that use an asynchronous callback function
-export class AsyncTwitchCallbackCommand extends TwitchCallbackCommand {
+export class AsyncTwitchCommand extends TwitchCommand {
 
-  constructor(name, callback, options={}) {
-    super(name, callback, options);
+  constructor(name, output, options={}) {
+    super(name, output, options);
   }
 
   async execute(messageObject) {

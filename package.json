@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.3.8",
     "discord.js": "^13.6.0",
     "dotenv": "^16.3.1",
     "node-fetch": "^3.3.1",
