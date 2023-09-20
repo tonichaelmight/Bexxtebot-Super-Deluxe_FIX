@@ -61,6 +61,7 @@ export class TwitchCommand {
     try {
       // pass the message object if the command needs to reference it
       this.options.refsMessage ? messageObject.addResponse(this.outputFunction(messageObject)) : messageObject.addResponse(this.outputFunction());
+      this.streamer.bot.logger.addCommandLog(this.name, messageObject);
     } catch (e) {
       logError(e);
     }

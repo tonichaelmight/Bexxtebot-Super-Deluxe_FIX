@@ -5,10 +5,11 @@ import TwitchMessage from './TwitchMessage.js';
 import Streamer from './Streamer.js';
 
 export default class Bot {
-  constructor(name, channel, token, commands, timers, config) {
+  constructor(name, channel, token, commands, timers, logger, config) {
     this.name = name;
     this.channel = channel;
     this.token = token;
+    this.logger = logger;
     this.streamer = new Streamer(this.channel, commands, timers, config, this);
   }
 
