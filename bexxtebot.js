@@ -4,7 +4,6 @@
 
 // REQUIRES
 import { BOT_NAME, BEXXTEBOT_TOKEN } from './ev.js'; // environment variables
-import { logError } from './utils.js';
 import commands from './commands.js';
 import timers from './timers.js';
 import bexxteConfig from './configuration.js';
@@ -20,5 +19,5 @@ const bexxteBot = new Bot(BOT_NAME, bexxteConfig.broadcastingChannel, BEXXTEBOT_
 try {
   bexxteBot.run();
 } catch (e) {
-  logError(e);
+  bexxteBot.logger.log('error', e);
 }

@@ -1,5 +1,4 @@
 // if you're trying to make a new command, this is the right page; scroll down a bit further
-import { logError } from '../utils.js';
 
 // Basic commands will yield the same output every time they are executed -- foundation for more specialized command types
 export class TwitchCommand {
@@ -61,9 +60,9 @@ export class TwitchCommand {
     try {
       // pass the message object if the command needs to reference it
       this.options.refsMessage ? messageObject.addResponse(this.outputFunction(messageObject)) : messageObject.addResponse(this.outputFunction());
-      this.streamer.bot.logger.addCommandLog(this.name, messageObject);
+      this.streamer.bot.logger.log('command', this.name, messageObject);
     } catch (e) {
-      logError(e);
+      this.streamer.bot.logger.log('error', e, messageObject);
     }
   }
 }
@@ -83,8 +82,9 @@ export class AsyncTwitchCommand extends TwitchCommand {
 
     try {
       this.options.refsMessage ? messageObject.addResponse(await this.outputFunction(messageObject)) : messageObject.addResponse(await this.outputFunction());
+      this.streamer.bot.logger.log('command', this.name, messageObject);
     } catch (e) {
-      logError(e);
+      this.streamer.bot.logger.log('error', e, messageObject);
     }
   }
 
@@ -171,9 +171,10 @@ export class TwitchCounterCommand extends TwitchCommand {
         return;
       }
       messageObject.addResponse(this.outputs[evaluation.action](evaluation));
+      this.streamer.bot.logger.log('command', this.name, messageObject);
       return;
     } catch (e) {
-      logError(e);
+      this.streamer.bot.logger.log('error', e, messageObject);
     }
   }
 }

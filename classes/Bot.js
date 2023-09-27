@@ -1,5 +1,4 @@
 import twitch from 'tmi.js';
-import { logError } from '../utils.js';
 
 import TwitchMessage from './TwitchMessage.js';
 import Streamer from './Streamer.js';
@@ -39,8 +38,8 @@ export default class Bot {
       try {
         // there are no errors expected here, so if something does happen it gets logged in error.txt and we keep the program running (otherwise bexxteBot stops :/ )
         await this.processTwitchMessage(twitchMessage);
-      } catch (error) {
-        logError(error);
+      } catch(e) {
+        this.logger.log('error', e, twitchMessage);
       }
 
     })
@@ -147,7 +146,7 @@ export default class Bot {
       try {
         this.speakInTwitch(twitchMessage);
       } catch (e) {
-        logError(e);
+        this.logger.log('error', e);
       }
       return;
     }
@@ -167,7 +166,7 @@ export default class Bot {
       //this.establishDiscordClient();
       this.startTimers();
     } catch (e) {
-      logError(e);
+      this.logger.log('error', e);
     }
   }
 

@@ -1,6 +1,5 @@
 import { BEXXTEBOT_TOKEN, CLIENT_ID } from '../ev.js';
 import https from 'https';
-import { logError } from '../utils.js';
 import Cache from './Cache.js';
 
 export default class Streamer {
@@ -85,7 +84,7 @@ export default class Streamer {
           // if the data come in multiple chunks, the initial attempts will fail since the data is incomplete. Throws "SyntaxError: Unexpected end of JSON input"
           // this can be ignored
           if (!(e.name === 'SyntaxError' && e.message === 'Unexpected end of JSON input')) {
-            logError(e);
+            return this.bot.logger.log('error', e);
           }
         }
 
@@ -93,8 +92,8 @@ export default class Streamer {
 
     });
 
-    channelInfoRequest.on('error', error => {
-      logError(error);
+    channelInfoRequest.on('error', e => {
+      this.bot.logger.log('error', e);
     })
 
     channelInfoRequest.end();

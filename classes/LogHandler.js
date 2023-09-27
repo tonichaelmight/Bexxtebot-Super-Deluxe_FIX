@@ -29,16 +29,16 @@ export default class LogHandler {
     return path;
   }
 
-  addCommandLog(command, messageObject) {
+  log(type, context, messageObject) {
     const timestamp = this.getCurrentTimestamp();
     const timestampMap = this.getTimestampMapping(timestamp);
 
-    const path = this.buildFileStructureFromTimestampMap(timestampMap, 'commands');
+    const path = this.buildFileStructureFromTimestampMap(timestampMap, type);
 
     const eventData = {
-      command: command,
+      context: context.stack || context,
       username: messageObject.tags.username,
-      messageContent: messageObject.content
+      messageContent: messageObject?.content
     }
     
     const fileName = `${path}data.json`;

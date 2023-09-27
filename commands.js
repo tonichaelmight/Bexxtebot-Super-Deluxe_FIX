@@ -1,4 +1,3 @@
-import { logError } from './utils.js';
 import { TwitchCommand, AsyncTwitchCommand, TwitchCounterCommand } from './classes/TwitchCommand.js';
 import Streamer from './classes/Streamer.js';
 import bexxteConfig from './configuration.js';
@@ -9,6 +8,8 @@ const commands = {
   // BASIC COMMANDS
 
   // template: new TwitchCommand('template', 'This is a tempalte command. Replace this text with the output you would like to occur'),
+
+  error: new TwitchCommand('error', () => { throw new Error('jinkies') } ),
 
   bexxtebot: new TwitchCommand('bexxtebot', 'Hey there everyone, my name is BexxteBot! I am a custom chat bot designed specifically for this channel; if you see me do or say anything crazy, make sure to let @bexxters or @tonichaelmight know so that it can be fixed ASAP. Happy Chatting! bexxteLove'),
 
@@ -229,7 +230,7 @@ const commands = {
 
   // shoutout command
   so: new AsyncTwitchCommand('so',
-    async messageObject => {
+    async function(messageObject) {
       let recipient = messageObject.content.split(' ')[1];
       let output;
 
@@ -261,7 +262,7 @@ const commands = {
           return output;
         }
 
-        logError(e);
+        return this.streamer.bot.logger.log('error', e, messageObject);
       }
 
       let shoutout = '';
@@ -289,12 +290,12 @@ const commands = {
   ),
 
   uptime: new AsyncTwitchCommand('uptime',
-    async () => {
+    async function() {
       let streamerData;
       try {
         streamerData = await Streamer.getCurrentStreamerData(bexxteConfig.broadcastingChannel);
       } catch (e) {
-        logError(e);
+        return this.streamer.bot.logger.log('error', e, messageObject);
       }
 
       let uptimeOutput = '';
