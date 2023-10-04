@@ -16,8 +16,21 @@ import Bot from './classes/Bot.js';
 // THE QUEEN AND LEGEND HERSELF
 const bexxteBot = new Bot(BOT_NAME, bexxteConfig.broadcastingChannel, BEXXTEBOT_TOKEN, commands, timers, new LogHandler(), bexxteConfig);
 
-try {
-  bexxteBot.run();
-} catch (e) {
-  bexxteBot.logger.log('error', e);
+// node bexxtebot.js log command
+// node bexxtebot.js log error
+if (process.argv.length > 2) {
+  if (process.argv[2].match(/logs?/i)) {
+    if (process.argv[3].match(/commands?/i)) {
+      bexxteBot.logger.makeLog('command');
+    } else if (process.argv[3].match(/errors?/i)) {
+      bexxteBot.logger.makeLog('error');
+    }
+  }
+} else {
+  try {
+    bexxteBot.run();
+  } catch (e) {
+    bexxteBot.logger.log('error', e);
+  }
 }
+
