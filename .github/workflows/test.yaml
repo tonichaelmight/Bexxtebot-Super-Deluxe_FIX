@@ -1,0 +1,14 @@
+name: test
+
+on: pull_request
+
+  jobs:
+
+  run-test-suite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/setup-node@v3
+        with:
+          node-version: '16'
+      - run npm install
+      - run npm test
