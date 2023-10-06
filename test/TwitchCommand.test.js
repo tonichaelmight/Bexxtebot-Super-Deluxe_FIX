@@ -103,7 +103,8 @@ test('each property of the returned object holds the correct value', () => {
 
 function wait(ms) {
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
+        const ref = setTimeout(() => {
+            ref.unref();
             resolve(true);
         }, ms);
     })
@@ -117,11 +118,6 @@ test('createCooldown() creates a cooldown', async () => {
     expect(tc2.onCooldown).toStrictEqual(true);
     await wait(15);
     expect(tc2.onCooldown).toStrictEqual(false);
-
-    const afterTimeout = setTimeout(() => {
-        expect(tc2.onCooldown).toStrictEqual(false);
-        afterTimeout.unref();
-    }, tc2.options.cooldown_ms + 10);
 })
 
 // necessary to have these commands linked to a bot/streamer for logger logic
