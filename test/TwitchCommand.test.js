@@ -2,7 +2,7 @@ import Bot from "../classes/Bot";
 import LogHandler from "../classes/LogHandler";
 import { TwitchCommand } from "../classes/TwitchCommand";
 import TwitchMessage from '../classes/TwitchMessage'; 
-import bexxteConfig from "../configuration";
+import bexxteConfig from "../configuration.js";
 
 const tc1 = new TwitchCommand('shelby', 'hi this is shelby');
 const tc2 = new TwitchCommand('renee', 'hi this is renee', {cooldown_ms: 500})
@@ -101,18 +101,23 @@ test('each property of the returned object holds the correct value', () => {
     expect(tc8.options.refsMessage).toStrictEqual(true);
 })
 
+function wait(ms) {
+    return new Promise((resolve, reject) => {
+        const ref = setTimeout(() => {
+            ref.unref();
+            resolve(true);
+        }, ms);
+    })
+}
+
 test('createCooldown() creates a cooldown', async () => {
     expect(tc2.onCooldown).toStrictEqual(false);
     tc2.createCooldown();
     expect(tc2.onCooldown).toStrictEqual(true);
-    const beforeTimeout = setTimeout(() => {
-        expect(tc2.onCooldown).toStrictEqual(true);
-        beforeTimeout.unref();
-    }, tc2.options.cooldown_ms - 10)
-    const afterTimeout = setTimeout(() => {
-        expect(tc2.onCooldown).toStrictEqual(false);
-        afterTimeout.unref();
-    }, tc2.options.cooldown_ms + 10);
+    await wait(tc2.options.cooldown_ms - 10);
+    expect(tc2.onCooldown).toStrictEqual(true);
+    await wait(15);
+    expect(tc2.onCooldown).toStrictEqual(false);
 })
 
 // necessary to have these commands linked to a bot/streamer for logger logic

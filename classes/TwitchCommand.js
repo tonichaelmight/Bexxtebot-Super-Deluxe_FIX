@@ -30,8 +30,9 @@ export class TwitchCommand {
 
   createCooldown() {
     this.onCooldown = true;
-    setTimeout(() => {
+    const ref = setTimeout(() => {
       this.onCooldown = false;
+      ref.unref();
     }, this.options.cooldown_ms);
   }
 
