@@ -1,7 +1,8 @@
+import Bot from "../classes/Bot";
+import LogHandler from "../classes/LogHandler";
 import { TwitchCommand } from "../classes/TwitchCommand";
 import TwitchMessage from '../classes/TwitchMessage'; 
-
-import { assert } from 'chai';
+import bexxteConfig from "../configuration";
 
 const tc1 = new TwitchCommand('shelby', 'hi this is shelby');
 const tc2 = new TwitchCommand('renee', 'hi this is renee', {cooldown_ms: 500})
@@ -113,6 +114,9 @@ test('createCooldown() creates a cooldown', async () => {
         afterTimeout.unref();
     }, tc2.options.cooldown_ms + 10);
 })
+
+// necessary to have these commands linked to a bot/streamer for logger logic
+const bexxteFake = new Bot('bexxteFake', 'tonichaelmight', undefined, [tc1, tc3, tc5], [], new LogHandler(), bexxteConfig);
 
 test('execute() works', () => {
     const testMessage = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!shelby', false);
