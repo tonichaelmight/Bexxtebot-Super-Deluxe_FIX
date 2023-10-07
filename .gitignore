@@ -5,3 +5,5 @@ configuration.js
 ev.js 
 *.txt
 .env
+*.replit
+*.nix
