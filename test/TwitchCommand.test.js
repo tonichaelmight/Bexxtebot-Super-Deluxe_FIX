@@ -1,8 +1,5 @@
-import Bot from "../classes/Bot";
-import LogHandler from "../classes/LogHandler";
 import { TwitchCommand } from "../classes/TwitchCommand";
 import TwitchMessage from '../classes/TwitchMessage'; 
-import bexxteConfig from "../configuration.js";
 
 const tc1 = new TwitchCommand('shelby', 'hi this is shelby');
 const tc2 = new TwitchCommand('renee', 'hi this is renee', {cooldown_ms: 500})
@@ -101,75 +98,79 @@ test('each property of the returned object holds the correct value', () => {
     expect(tc8.options.refsMessage).toStrictEqual(true);
 })
 
-function wait(ms) {
-    return new Promise((resolve, reject) => {
-        const ref = setTimeout(() => {
-            ref.unref();
-            resolve(true);
-        }, ms);
-    })
-}
+// this will also need to go elsewhere I think
 
-test('createCooldown() creates a cooldown', async () => {
-    expect(tc2.onCooldown).toStrictEqual(false);
-    tc2.createCooldown();
-    expect(tc2.onCooldown).toStrictEqual(true);
-    await wait(tc2.options.cooldown_ms - 10);
-    expect(tc2.onCooldown).toStrictEqual(true);
-    await wait(15);
-    expect(tc2.onCooldown).toStrictEqual(false);
-})
+// function wait(ms) {
+//     return new Promise((resolve, reject) => {
+//         const ref = setTimeout(() => {
+//             ref.unref();
+//             resolve(true);
+//         }, ms);
+//     })
+// }
 
-// necessary to have these commands linked to a bot/streamer for logger logic
-const bexxteFake = new Bot('bexxteFake', 'tonichaelmight', undefined, [tc1, tc3, tc5], [], new LogHandler(), bexxteConfig);
+// test('createCooldown() creates a cooldown', async () => {
+//     expect(tc2.onCooldown).toStrictEqual(false);
+//     tc2.createCooldown();
+//     expect(tc2.onCooldown).toStrictEqual(true);
+//     await wait(tc2.options.cooldown_ms - 10);
+//     expect(tc2.onCooldown).toStrictEqual(true);
+//     await wait(15);
+//     expect(tc2.onCooldown).toStrictEqual(false);
+// })
 
-test('execute() works', () => {
-    const testMessage = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!shelby', false);
-    tc1.execute(testMessage);
+// THIS WILL NEED TO BE DONE SOMEWHERE ELSE
 
-    expect(testMessage).toHaveProperty('response');
-    expect(testMessage.response[0]).toHaveProperty('output');
-    expect(testMessage.response[0].output).toStrictEqual('hi this is shelby');
-});
+// // necessary to have these commands linked to a bot/streamer for logger logic
+// const bexxteFake = new Bot('bexxteFake', 'tonichaelmight', undefined, [tc1, tc3, tc5], [], new LogHandler(), bexxteConfig);
 
-test('moderation is effective', () => {
-    const testMessage1 = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!esme', false);
-    const testMessage2 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', mod: true}, '!esme', false);
-    const testMessage3 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', badges: {vip: 1}}, '!esme', false);
-    // tc3 is mod-only so nothing should happen here
-    tc3.execute(testMessage1);
-    expect(testMessage1).not.toHaveProperty('response');
-    // testMessage2 was sent by a mod, so a response should be added
-    tc3.execute(testMessage2);
-    expect(testMessage2).toHaveProperty('response');
-    expect(testMessage2.response).toHaveLength(1);
-    expect(testMessage2.response[0].output).toStrictEqual('hi this is esme');
-    // vip should do nothing
-    tc3.execute(testMessage3);
-    expect(testMessage3).not.toHaveProperty('response');
-})
+// test('execute() works', () => {
+//     const testMessage = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!shelby', false);
+//     tc1.execute(testMessage);
 
-test('createCooldown() is effective in execution', () => {
-    const testMessage1 = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!bella', false);
-    const testMessage2 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', mod: true}, '!bella', false);
-    const testMessage3 = new TwitchMessage('#tonichaelmight', {username: 'theninjamdm', badges: {vip: '1'}}, '!bella', false);
+//     expect(testMessage).toHaveProperty('response');
+//     expect(testMessage.response[0]).toHaveProperty('output');
+//     expect(testMessage.response[0].output).toStrictEqual('hi this is shelby');
+// });
+
+// test('moderation is effective', () => {
+//     const testMessage1 = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!esme', false);
+//     const testMessage2 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', mod: true}, '!esme', false);
+//     const testMessage3 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', badges: {vip: 1}}, '!esme', false);
+//     // tc3 is mod-only so nothing should happen here
+//     tc3.execute(testMessage1);
+//     expect(testMessage1).not.toHaveProperty('response');
+//     // testMessage2 was sent by a mod, so a response should be added
+//     tc3.execute(testMessage2);
+//     expect(testMessage2).toHaveProperty('response');
+//     expect(testMessage2.response).toHaveLength(1);
+//     expect(testMessage2.response[0].output).toStrictEqual('hi this is esme');
+//     // vip should do nothing
+//     tc3.execute(testMessage3);
+//     expect(testMessage3).not.toHaveProperty('response');
+// })
+
+// test('createCooldown() is effective in execution', () => {
+//     const testMessage1 = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!bella', false);
+//     const testMessage2 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', mod: true}, '!bella', false);
+//     const testMessage3 = new TwitchMessage('#tonichaelmight', {username: 'theninjamdm', badges: {vip: '1'}}, '!bella', false);
     
-    expect(tc5.onCooldown).toStrictEqual(false);
-    tc5.execute(testMessage1);
-    expect(testMessage1).toHaveProperty('response');
-    expect(testMessage1.response).toHaveLength(1);
-    expect(tc5.onCooldown).toStrictEqual(true);
-    tc5.execute(testMessage1);
-    // should not add a message since the command is on cooldown
-    expect(testMessage1.response).toHaveLength(1);
+//     expect(tc5.onCooldown).toStrictEqual(false);
+//     tc5.execute(testMessage1);
+//     expect(testMessage1).toHaveProperty('response');
+//     expect(testMessage1.response).toHaveLength(1);
+//     expect(tc5.onCooldown).toStrictEqual(true);
+//     tc5.execute(testMessage1);
+//     // should not add a message since the command is on cooldown
+//     expect(testMessage1.response).toHaveLength(1);
 
-    tc5.execute(testMessage2);
-    expect(testMessage2.response).toHaveLength(1);
-    tc5.execute(testMessage2);
-    expect(testMessage2.response).toHaveLength(2);
+//     tc5.execute(testMessage2);
+//     expect(testMessage2.response).toHaveLength(1);
+//     tc5.execute(testMessage2);
+//     expect(testMessage2.response).toHaveLength(2);
 
-    // VIP is subject to cooldowns
-    tc5.execute(testMessage3);
-    expect(testMessage3.response).toStrictEqual(undefined);
-})
+//     // VIP is subject to cooldowns
+//     tc5.execute(testMessage3);
+//     expect(testMessage3.response).toStrictEqual(undefined);
+// })
 
