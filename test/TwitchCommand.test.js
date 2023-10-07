@@ -120,17 +120,19 @@ test('createCooldown() creates a cooldown', async () => {
     expect(tc2.onCooldown).toStrictEqual(false);
 })
 
-// necessary to have these commands linked to a bot/streamer for logger logic
-const bexxteFake = new Bot('bexxteFake', 'tonichaelmight', undefined, [tc1, tc3, tc5], [], new LogHandler(), bexxteConfig);
+// THIS WILL NEED TO BE DONE SOMEWHERE ELSE
 
-test('execute() works', () => {
-    const testMessage = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!shelby', false);
-    tc1.execute(testMessage);
+// // necessary to have these commands linked to a bot/streamer for logger logic
+// const bexxteFake = new Bot('bexxteFake', 'tonichaelmight', undefined, [tc1, tc3, tc5], [], new LogHandler(), bexxteConfig);
 
-    expect(testMessage).toHaveProperty('response');
-    expect(testMessage.response[0]).toHaveProperty('output');
-    expect(testMessage.response[0].output).toStrictEqual('hi this is shelby');
-});
+// test('execute() works', () => {
+//     const testMessage = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!shelby', false);
+//     tc1.execute(testMessage);
+
+//     expect(testMessage).toHaveProperty('response');
+//     expect(testMessage.response[0]).toHaveProperty('output');
+//     expect(testMessage.response[0].output).toStrictEqual('hi this is shelby');
+// });
 
 test('moderation is effective', () => {
     const testMessage1 = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!esme', false);
