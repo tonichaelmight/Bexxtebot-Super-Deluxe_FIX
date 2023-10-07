@@ -4,4 +4,3 @@ node_modules/
 *.txt
 logs/
 .env
-.gitignore
