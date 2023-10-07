@@ -1,8 +1,5 @@
-import Bot from "../classes/Bot";
-import LogHandler from "../classes/LogHandler";
 import { TwitchCommand } from "../classes/TwitchCommand";
 import TwitchMessage from '../classes/TwitchMessage'; 
-import bexxteConfig from "../configuration.js";
 
 const tc1 = new TwitchCommand('shelby', 'hi this is shelby');
 const tc2 = new TwitchCommand('renee', 'hi this is renee', {cooldown_ms: 500})
