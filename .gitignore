@@ -1,0 +1,7 @@
+logs/
+node_modules/
+cache.json
+configuration.js 
+ev.js 
+*.txt
+.env
