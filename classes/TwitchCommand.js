@@ -109,7 +109,7 @@ export class TwitchCounterCommand extends TwitchCommand {
         // !test set
         if (messageWords[1] === 'set') {
           evaluation.action = 'set';
-          const newValue = messageWords[2];
+          const newValue = messageWords[2] * 1;
           const setSuccess = this.setValue(newValue);
           if (setSuccess) {
             evaluation.successful = true;
