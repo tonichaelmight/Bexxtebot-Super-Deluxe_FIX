@@ -1,0 +1,3 @@
+{
+    "ignore": [".test.js", "logs/", ".git", "cache.json"]
+}

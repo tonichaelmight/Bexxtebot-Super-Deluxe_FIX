@@ -18,3 +18,7 @@ test('each property of the returned object holds the correct value', () => {
     expect(twitchResponse2.output).toStrictEqual('hey');
     expect(twitchResponse2.mean).toStrictEqual(true);
 })
+
+// create a fully fledged fake
+// or just point to bexxtebot?
+// then test things within that context so that up and down references work properly
