@@ -23,7 +23,7 @@ const commands = {
         return new Promise((resolve, reject) => {
             const ref = setTimeout(() => {
                 ref.unref();
-                resolve(true);
+                resolve('hi this is alice');
             }, 500);
         })
     })

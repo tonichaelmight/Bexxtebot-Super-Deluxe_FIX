@@ -78,6 +78,13 @@ test('each property of the returned object holds the correct value', () => {
     expect(commands.forever.options.cooldown_ms).toStrictEqual(10000);
     expect(commands.forever.options.modOnly).toStrictEqual(false);
     expect(commands.forever.options.refsMessage).toStrictEqual(true);
+
+    expect(commands.alice.name).toStrictEqual('alice');
+    expect(commands.alice.outputFunction()).resolves.toStrictEqual('hi this is alice');
+    expect(commands.alice.onCooldown).toStrictEqual(false);
+    expect(commands.alice.options.cooldown_ms).toStrictEqual(10000);
+    expect(commands.alice.options.modOnly).toStrictEqual(false);
+    expect(commands.alice.options.refsMessage).toStrictEqual(false);
 });
 
 test('aliases build out correctly', () => {
@@ -127,10 +134,6 @@ test('createCooldown() creates a cooldown', async () => {
     expect(commands.renee.onCooldown).toStrictEqual(false);
 })
 
-// THIS WILL NEED TO BE DONE SOMEWHERE ELSE
-
-// // necessary to have these commands linked to a bot/streamer for logger logic
-// const bexxteFake = new Bot('bexxteFake', 'tonichaelmight', undefined, [commands, commands, commands], [], new LogHandler(), bexxteConfig);
 
 test('execute() works', () => {
     const testMessage = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!shelby', false);
