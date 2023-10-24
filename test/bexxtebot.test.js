@@ -6,6 +6,7 @@ import Bot from "../classes/Bot";
 const botName = 'bexxteFake';
 const broadcastingChannel = 'tonichaelmight'
 const token = 12345;
+const clientID = 67890;
 const commands = {
     shelby: new TwitchCommand('shelby', 'hi this is shelby'),
     renee: new TwitchCommand('renee', 'hi this is renee', {cooldown_ms: 500}),
@@ -31,7 +32,7 @@ const commands = {
 const timers = [];
 const config = {};
 
-const bexxteFake = new Bot(botName, broadcastingChannel, token, commands, timers, new LogHandler(), config);
+const bexxteFake = new Bot(botName, broadcastingChannel, token, clientID, commands, timers, new LogHandler(), config);
 
 export default bexxteFake;
 
