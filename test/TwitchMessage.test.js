@@ -1,3 +1,4 @@
+// similar to TwitchResponse, I think all of this is fine to stay here
 import TwitchMessage from '../classes/TwitchMessage';
 
 const testMessage1 = new TwitchMessage('#bexxtebot', {username: 'tonichaelmight', mod: true}, 'hi');

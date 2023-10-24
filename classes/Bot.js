@@ -14,6 +14,7 @@ export default class Bot {
 
   // estabishes a client that can read and send messages from/to Twitch
   establishTwitchClient() {
+    
     this.twitchClient = new twitch.Client({
       options: {
         debug: true

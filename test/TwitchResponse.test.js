@@ -1,3 +1,8 @@
+// I think the stuff here makes sense where it is
+// this class is self contained, so it's not dependent on anything else being linked correctly
+// in fact, I think it would be more difficult to make assertions for this within the context
+// of the whole bot
+
 import TwitchResponse from "../classes/TwitchResponse";
 
 const twitchResponse1 = new TwitchResponse('hi');
@@ -18,7 +23,3 @@ test('each property of the returned object holds the correct value', () => {
     expect(twitchResponse2.output).toStrictEqual('hey');
     expect(twitchResponse2.mean).toStrictEqual(true);
 })
-
-// create a fully fledged fake
-// or just point to bexxtebot?
-// then test things within that context so that up and down references work properly
