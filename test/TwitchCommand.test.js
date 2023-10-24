@@ -148,7 +148,7 @@ test('moderation is effective', () => {
     const testMessage1 = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!esme', false);
     const testMessage2 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', mod: true}, '!esme', false);
     const testMessage3 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', badges: {vip: 1}}, '!esme', false);
-    // commands is mod-only so nothing should happen here
+    // command is mod-only so nothing should happen here
     commands.esme.execute(testMessage1);
     expect(testMessage1).not.toHaveProperty('response');
     // testMessage2 was sent by a mod, so a response should be added
