@@ -1,12 +1,17 @@
-import { BEXXTEBOT_TOKEN, CLIENT_ID } from '../ev.js';
 import https from 'https';
 import Cache from './Cache.js';
 
 export default class Streamer {
 
-  constructor(username, commands, timers, config, bot) {
+  static streamerToken;
+  static streamerID;
+
+  constructor(username, token, clientID, commands, timers, config, bot) {
     this.username = username.startsWith('#') ? username.slice(1) : username;
     this.commands = commands;
+
+    Streamer.streamerToken = token;
+    Streamer.streamerID = clientID;
    
     this.addCommandAliases(this.commands);
     for (const command in this.commands) {
@@ -44,8 +49,8 @@ export default class Streamer {
       method: 'GET',
       path: `/helix/search/channels?query=${streamer}`,
       headers: {
-        'Authorization': `Bearer ${BEXXTEBOT_TOKEN}`,
-        'Client-id': CLIENT_ID
+        'Authorization': `Bearer ${this.streamerToken}`,
+        'Client-id': this.streamerID
       }
     }
 
