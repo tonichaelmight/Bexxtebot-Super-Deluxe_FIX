@@ -9,6 +9,7 @@ export default class Cache {
       cache = JSON.parse(readFileSync(this.filePath, 'utf-8'));
     } catch(e) {
       console.log(e);
+      writeFileSync(this.filePath, '{}');
       cache = {};
     }
     this.cache = cache;
