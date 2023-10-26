@@ -4,25 +4,25 @@
 import bexxteFake from './bexxtebot.test.js';
 const { commands } = bexxteFake.streamer;
 
-// ALL COMMANDS SHOULD GO INTO bexxtebot.test.js
-
-import { TwitchCommand } from "../classes/TwitchCommand";
-import TwitchMessage from '../classes/TwitchMessage'; 
+import TwitchMessage from '../classes/TwitchMessage';
+import { assert } from 'chai';
 
 test('returns an object with "name", "outputFunction", "onCooldown", "options.cooldown_ms", and "options.modOnly" properties', () => {
 
     for (const command in commands) {
-        expect(commands[command]).toHaveProperty('name');
-        expect(commands[command]).toHaveProperty('outputFunction');
-        expect(commands[command]).toHaveProperty('options');
-        expect(commands[command]).toHaveProperty('onCooldown');
-        expect(commands[command].options).toHaveProperty('cooldown_ms');
-        expect(commands[command].options).toHaveProperty('modOnly');
+        assert.property(commands[command], 'name');
+        assert.property(commands[command], 'outputFunction');
+        assert.property(commands[command], 'options');
+        assert.property(commands[command], 'onCooldown');
+        assert.property(commands[command].options, 'cooldown_ms');
+        assert.property(commands[command].options, 'modOnly');
     }
 
-    [commands.edward, commands.bella].forEach(command => {
-        expect(command.options).toHaveProperty('aliases');
-    })
+    [commands.edward, commands.bella, commands.jacob].forEach(command => {
+        assert.property(command.options, 'aliases');
+    });
+
+    expect(commands.jacob).toHaveProperty('outputs');
 
 })
 
@@ -69,8 +69,8 @@ test('each property of the returned object holds the correct value', () => {
     expect(commands.edward.options.modOnly).toStrictEqual(false);
     // multiple aliases
     expect(commands.edward.options.aliases).toStrictEqual(['edwina', 'eduardo']);
-    
-    const testMessage = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!forever edward bella', false);
+
+    const testMessage = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!forever edward bella', false);
 
     expect(commands.forever.name).toStrictEqual('forever');
     expect(commands.forever.outputFunction(testMessage)).toStrictEqual('bella edward forever');
@@ -85,6 +85,14 @@ test('each property of the returned object holds the correct value', () => {
     expect(commands.alice.options.cooldown_ms).toStrictEqual(10000);
     expect(commands.alice.options.modOnly).toStrictEqual(false);
     expect(commands.alice.options.refsMessage).toStrictEqual(false);
+    
+    expect(commands.jacob.name).toStrictEqual('jacob');
+    expect(commands.jacob.outputFunction()).toBeUndefined();
+    expect(commands.jacob.onCooldown).toStrictEqual(false);
+    expect(commands.jacob.options.cooldown_ms).toStrictEqual(10000);
+    expect(commands.jacob.options.modOnly).toStrictEqual(false);
+    expect(commands.jacob.options.refsMessage).toStrictEqual(false);
+    expect(commands.jacob.options.aliases).toStrictEqual(['jacobs']);
 });
 
 test('aliases build out correctly', () => {
@@ -135,19 +143,28 @@ test('createCooldown() creates a cooldown', async () => {
 })
 
 
-test('execute() works', () => {
-    const testMessage = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!shelby', false);
+test('execute() works', async () => {
+    const testMessage = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!shelby', false);
     commands.shelby.execute(testMessage);
 
     expect(testMessage).toHaveProperty('response');
     expect(testMessage.response[0]).toHaveProperty('output');
     expect(testMessage.response[0].output).toStrictEqual('hi this is shelby');
+
+    const testMessage2 = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!alice', false);
+    commands.alice.execute(testMessage2);
+
+    // async function
+    await wait(550);
+    expect(testMessage2).toHaveProperty('response');
+    expect(testMessage2.response[0]).toHaveProperty('output');
+    expect(testMessage2.response[0].output).toStrictEqual('hi this is alice');
 });
 
 test('moderation is effective', () => {
-    const testMessage1 = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!esme', false);
-    const testMessage2 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', mod: true}, '!esme', false);
-    const testMessage3 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', badges: {vip: 1}}, '!esme', false);
+    const testMessage1 = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!esme', false);
+    const testMessage2 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', mod: true }, '!esme', false);
+    const testMessage3 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', badges: { vip: 1 } }, '!esme', false);
     // command is mod-only so nothing should happen here
     commands.esme.execute(testMessage1);
     expect(testMessage1).not.toHaveProperty('response');
@@ -162,10 +179,10 @@ test('moderation is effective', () => {
 });
 
 test('createCooldown() is effective in execution', () => {
-    const testMessage1 = new TwitchMessage('#tonichaelmight', {username: 'bexxters'}, '!bella', false);
-    const testMessage2 = new TwitchMessage('#tonichaelmight', {username: 'bexxters', mod: true}, '!bella', false);
-    const testMessage3 = new TwitchMessage('#tonichaelmight', {username: 'theninjamdm', badges: {vip: '1'}}, '!bella', false);
-    
+    const testMessage1 = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!bella', false);
+    const testMessage2 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', mod: true }, '!bella', false);
+    const testMessage3 = new TwitchMessage('#tonichaelmight', { username: 'theninjamdm', badges: { vip: '1' } }, '!bella', false);
+
     expect(commands.bella.onCooldown).toStrictEqual(false);
     commands.bella.execute(testMessage1);
     expect(testMessage1).toHaveProperty('response');

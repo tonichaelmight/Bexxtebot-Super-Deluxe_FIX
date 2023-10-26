@@ -1,3 +1,4 @@
+// fully covered
 export default class TwitchResponse {
   
   constructor(output, mean=false) {
