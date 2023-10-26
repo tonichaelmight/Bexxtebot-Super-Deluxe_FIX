@@ -11,8 +11,6 @@ export default class Cache {
       if (!e.message.includes('no such file or directory, open')) {
           throw e;
       }
-      console.log(e);
-      writeFileSync(this.filePath, '{}');
       cache = {};
     }
     this.cache = cache;
