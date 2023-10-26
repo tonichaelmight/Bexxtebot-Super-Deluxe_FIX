@@ -1,6 +1,8 @@
 // similar to TwitchResponse, I think all of this is fine to stay here
 import TwitchMessage from '../classes/TwitchMessage';
 
+import { assert } from 'chai';
+
 const testMessage1 = new TwitchMessage('#bexxtebot', {username: 'tonichaelmight', mod: true}, 'hi');
 const testMessage2 = new TwitchMessage('#bexxtebot', {username: 'tonichaelmight', mod: false}, 'hello', false);
 const testMessage3 = new TwitchMessage('#bexxtebot', {username: 'bexxtebot', mod: false}, 'hey');
@@ -10,92 +12,92 @@ test('returns an object with "channel", "tags", "content", and "self" properties
     const messages = [testMessage1, testMessage2, testMessage3, testMessage4];
 
     messages.forEach(message => {
-        expect(message).toHaveProperty('channel');
-        expect(message).toHaveProperty('tags');
-        expect(message).toHaveProperty('content');
-        expect(message).toHaveProperty('self');
+        assert.property(message, 'channel');
+        assert.property(message, 'tags');
+        assert.property(message, 'content');
+        assert.property(message, 'self');
     });
 });
 
 test('each property of the returned object holds the correct value', () => {
-    expect(testMessage1.channel).toStrictEqual('#bexxtebot');
-    expect(testMessage1.tags).toStrictEqual({username: 'tonichaelmight', mod: true});
-    expect(testMessage1.content).toStrictEqual('hi');
+    assert.strictEqual(testMessage1.channel, '#bexxtebot');
+    assert.deepEqual(testMessage1.tags, {username: 'tonichaelmight', mod: true});
+    assert.strictEqual(testMessage1.content, 'hi');
     // value not passed to the constructor, so asserts against tags.username
     // bexxtebot didn't send the message, so self should be false
-    expect(testMessage1.self).toStrictEqual(false);
+    assert.isFalse(testMessage1.self);
     
-    expect(testMessage2.channel).toStrictEqual('#bexxtebot');
-    expect(testMessage2.tags).toStrictEqual({username: 'tonichaelmight', mod: false});
-    expect(testMessage2.content).toStrictEqual('hello');
+    assert.strictEqual(testMessage2.channel, '#bexxtebot');
+    assert.deepEqual(testMessage2.tags, {username: 'tonichaelmight', mod: false});
+    assert.strictEqual(testMessage2.content, 'hello');
     // passed directly in the constructor
-    expect(testMessage2.self).toStrictEqual(false);
-
-    expect(testMessage3.channel).toStrictEqual('#bexxtebot');
-    expect(testMessage3.tags).toStrictEqual({username: 'bexxtebot', mod: false});
-    expect(testMessage3.content).toStrictEqual('hey');
+    assert.isFalse(testMessage2.self);
+    
+    assert.strictEqual(testMessage3.channel, '#bexxtebot');
+    assert.deepEqual(testMessage3.tags, {username: 'bexxtebot', mod: false});
+    assert.strictEqual(testMessage3.content, 'hey');
     // value not passed to the constructor, so asserts against tags.username
     // bexxtebot did send the message, so self should be true
-    expect(testMessage3.self).toStrictEqual(true);
+    assert.isTrue(testMessage3.self);
     
-    expect(testMessage4.channel).toStrictEqual('#bexxtebot');
-    expect(testMessage4.tags).toStrictEqual({username: 'theninjamdm', badges: {vip: '1'}});
-    expect(testMessage4.content).toStrictEqual('ahlan');
+    assert.strictEqual(testMessage4.channel, '#bexxtebot');
+    assert.deepEqual(testMessage4.tags, {username: 'theninjamdm', badges: {vip: '1'}});
+    assert.strictEqual(testMessage4.content, 'ahlan');
     // value not passed to the constructor, so asserts against tags.username
-    // bexxtebot didn't send the message, so self should be false
-    expect(testMessage4.self).toStrictEqual(false);
+    // bexxtebot did send the message, so self should be true
+    assert.isFalse(testMessage4.self);
 });
 
 test('tags messages for moderation appropriately', () => {
     // mod = true
-    expect(testMessage1.needsModeration()).toBe(false);
+    assert.isFalse(testMessage1.needsModeration());
     // mod = false
-    expect(testMessage2.needsModeration()).toBe(true);
+    assert.isTrue(testMessage2.needsModeration());
     // bexxtebot
-    expect(testMessage3.needsModeration()).toBe(false);
+    assert.isFalse(testMessage3.needsModeration());
     // vip
-    expect(testMessage4.needsModeration()).toBe(false);
+    assert.isFalse(testMessage4.needsModeration());
 });
 
 test('adds responses correctly', () => {
     testMessage1.addResponse('hey girl');
     // response should be an array with one item
-    expect(testMessage1.response).toBeDefined();
-    expect(Array.isArray(testMessage1.response)).toBe(true);
-    expect(testMessage1.response.length).toEqual(1);
-    expect(testMessage1.response[0].output).toEqual('hey girl')
+    assert.isDefined(testMessage1.response);
+    assert(Array.isArray(testMessage1.response));
+    assert.lengthOf(testMessage1.response, 1);
+    assert.strictEqual(testMessage1.response[0].output, 'hey girl');
     // mean is false by default
-    expect(testMessage1.response[0].mean).toEqual(false)
+    assert.isFalse(testMessage1.response[0].mean);
     
     testMessage1.addResponse('hey girl', true);
-    expect(testMessage1.response.length).toEqual(2);
-    expect(testMessage1.response[1].mean).toEqual(true)
+    assert.lengthOf(testMessage1.response, 2);
+    assert.isTrue(testMessage1.response[1].mean);
 
-
+    // adding multiple responses as an array
     testMessage2.addResponse(['ni hao', 'zdravstvooytye', 'czesc']);
-    expect(testMessage2.response).toBeDefined();
-    expect(testMessage2.response.length).toEqual(3);
-    expect(testMessage2.response[2].output).toEqual('czesc');
+    assert.isDefined(testMessage2.response);
+    assert.lengthOf(testMessage2.response, 3);
+    assert.strictEqual(testMessage2.response[2].output, 'czesc');
 }) 
 
 test('creates dummy messages correctly', () => {
     const dummy1 = TwitchMessage.generateDummyMessage('#bexxtebot');
-    expect(dummy1.channel).toBeDefined();
-    expect(dummy1.channel).toEqual('#bexxtebot');
-    expect(dummy1.tags).toBeDefined();
-    expect(dummy1.tags).toStrictEqual({ mod: true, username: '' });
-    expect(dummy1.content).toBeDefined();
-    expect(dummy1.content).toEqual('');
-    expect(dummy1.self).toBeDefined();
-    expect(dummy1.self).toBe(false);
+    assert.isDefined(dummy1.channel);
+    assert.strictEqual(dummy1.channel, '#bexxtebot');
+    assert.isDefined(dummy1.tags);
+    assert.deepEqual(dummy1.tags, { mod: true, username: '' });
+    assert.isDefined(dummy1.content);
+    assert.strictEqual(dummy1.content, '');
+    assert.isDefined(dummy1.self);
+    assert.isFalse(dummy1.self);
     
     const dummy2 = TwitchMessage.generateDummyMessage('#bexxtebot', '!whomst');
-    expect(dummy2.channel).toBeDefined();
-    expect(dummy2.channel).toEqual('#bexxtebot');
-    expect(dummy2.tags).toBeDefined();
-    expect(dummy2.tags).toStrictEqual({ mod: true, username: '' });
-    expect(dummy2.content).toBeDefined();
-    expect(dummy2.content).toEqual('!whomst');
-    expect(dummy2.self).toBeDefined();
-    expect(dummy2.self).toBe(false);
+    assert.isDefined(dummy2.channel);
+    assert.strictEqual(dummy2.channel, '#bexxtebot');
+    assert.isDefined(dummy2.tags);
+    assert.deepEqual(dummy2.tags, { mod: true, username: '' });
+    assert.isDefined(dummy2.content);
+    assert.strictEqual(dummy2.content, '!whomst');
+    assert.isDefined(dummy2.self);
+    assert.isFalse(dummy2.self);
 });

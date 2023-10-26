@@ -142,13 +142,13 @@ function wait(ms) {
 }
 
 test('createCooldown() creates a cooldown', async () => {
-    expect(commands.renee.onCooldown).toStrictEqual(false);
+    assert.isFalse(commands.renee.onCooldown);
     commands.renee.createCooldown();
-    expect(commands.renee.onCooldown).toStrictEqual(true);
+    assert.isTrue(commands.renee.onCooldown);
     await wait(commands.renee.options.cooldown_ms - 10);
-    expect(commands.renee.onCooldown).toStrictEqual(true);
+    assert.isTrue(commands.renee.onCooldown);
     await wait(15);
-    expect(commands.renee.onCooldown).toStrictEqual(false);
+    assert.isFalse(commands.renee.onCooldown);
 })
 
 
@@ -156,18 +156,18 @@ test('execute() works', async () => {
     const testMessage = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!shelby', false);
     commands.shelby.execute(testMessage);
 
-    expect(testMessage).toHaveProperty('response');
-    expect(testMessage.response[0]).toHaveProperty('output');
-    expect(testMessage.response[0].output).toStrictEqual('hi this is shelby');
+    assert.property(testMessage, 'response');
+    assert.property(testMessage.response[0], 'output');
+    assert.strictEqual(testMessage.response[0].output, 'hi this is shelby');
 
     const testMessage2 = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!alice', false);
     commands.alice.execute(testMessage2);
 
     // async function
     await wait(550);
-    expect(testMessage2).toHaveProperty('response');
-    expect(testMessage2.response[0]).toHaveProperty('output');
-    expect(testMessage2.response[0].output).toStrictEqual('hi this is alice');
+    assert.property(testMessage2, 'response');
+    assert.property(testMessage2.response[0], 'output');
+    assert.strictEqual(testMessage2.response[0].output, 'hi this is alice');
 });
 
 test('moderation is effective', () => {
@@ -176,15 +176,15 @@ test('moderation is effective', () => {
     const testMessage3 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', badges: { vip: 1 } }, '!esme', false);
     // command is mod-only so nothing should happen here
     commands.esme.execute(testMessage1);
-    expect(testMessage1).not.toHaveProperty('response');
+    assert.notProperty(testMessage1, 'response');
     // testMessage2 was sent by a mod, so a response should be added
     commands.esme.execute(testMessage2);
-    expect(testMessage2).toHaveProperty('response');
-    expect(testMessage2.response).toHaveLength(1);
-    expect(testMessage2.response[0].output).toStrictEqual('hi this is esme');
+    assert.property(testMessage2, 'response');
+    assert.lengthOf(testMessage2.response, 1);
+    assert.strictEqual(testMessage2.response[0].output, 'hi this is esme');
     // vip should do nothing
     commands.esme.execute(testMessage3);
-    expect(testMessage3).not.toHaveProperty('response');
+    assert.notProperty(testMessage3, 'response');
 });
 
 test('createCooldown() is effective in execution', () => {
@@ -192,22 +192,22 @@ test('createCooldown() is effective in execution', () => {
     const testMessage2 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', mod: true }, '!bella', false);
     const testMessage3 = new TwitchMessage('#tonichaelmight', { username: 'theninjamdm', badges: { vip: '1' } }, '!bella', false);
 
-    expect(commands.bella.onCooldown).toStrictEqual(false);
+    assert.isFalse(commands.bella.onCooldown);
     commands.bella.execute(testMessage1);
-    expect(testMessage1).toHaveProperty('response');
-    expect(testMessage1.response).toHaveLength(1);
-    expect(commands.bella.onCooldown).toStrictEqual(true);
+    assert.property(testMessage1, 'response');
+    assert.lengthOf(testMessage1.response, 1);
+    assert.isTrue(commands.bella.onCooldown);
     commands.bella.execute(testMessage1);
     // should not add a message since the command is on cooldown
-    expect(testMessage1.response).toHaveLength(1);
+    assert.lengthOf(testMessage1.response, 1);
 
     commands.bella.execute(testMessage2);
-    expect(testMessage2.response).toHaveLength(1);
+    assert.lengthOf(testMessage2.response, 1);
     commands.bella.execute(testMessage2);
-    expect(testMessage2.response).toHaveLength(2);
+    assert.lengthOf(testMessage2.response, 2);
 
     // VIP is subject to cooldowns
     commands.bella.execute(testMessage3);
-    expect(testMessage3.response).toStrictEqual(undefined);
+    assert.isUndefined(testMessage3.response);
 });
 
