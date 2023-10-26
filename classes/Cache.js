@@ -1,4 +1,4 @@
-import * as fs from 'node:fs';
+import { readFileSync, writeFileSync } from 'fs';
 
 export default class Cache {
   constructor(filePath) {
@@ -6,9 +6,11 @@ export default class Cache {
 
     let cache;
     try {
-      cache = JSON.parse(fs.readFileSync(this.filePath, 'utf-8'));
+      cache = JSON.parse(readFileSync(this.filePath, 'utf-8'));
     } catch(e) {
-      console.log(e);
+      if (!e.message.includes('no such file or directory, open')) {
+          throw e;
+      }
       cache = {};
     }
     this.cache = cache;
@@ -16,7 +18,7 @@ export default class Cache {
   }
 
   writeCache() {
-    fs.writeFileSync(this.filePath, JSON.stringify(this.cache));
+    writeFileSync(this.filePath, JSON.stringify(this.cache));
   }
 
   getCommandCache(commandName, defaultValue=[]) {

@@ -4,8 +4,8 @@ import TwitchMessage from './TwitchMessage.js';
 export default class Timer {
   constructor(name, min, range, options={}) {
     this.name = name;
-    this.min = min;
-    this.range = range;
+    this.min = min * 1000;
+    this.range = range * 1000;
 
     this.options = {};
     this.options.commands = options.commands || undefined;

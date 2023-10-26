@@ -1,3 +1,8 @@
+// I think the stuff here makes sense where it is
+// this class is self contained, so it's not dependent on anything else being linked correctly
+// in fact, I think it would be more difficult to make assertions for this within the context
+// of the whole bot
+
 import TwitchResponse from "../classes/TwitchResponse";
 
 const twitchResponse1 = new TwitchResponse('hi');
