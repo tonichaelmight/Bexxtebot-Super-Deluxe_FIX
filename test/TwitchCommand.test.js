@@ -22,77 +22,77 @@ test('returns an object with "name", "outputFunction", "onCooldown", "options.co
         assert.property(command.options, 'aliases');
     });
 
-    expect(commands.jacob).toHaveProperty('outputs');
+    assert.property(commands.jacob, 'outputs');
 
-})
+});
 
-test('each property of the returned object holds the correct value', () => {
-    expect(commands.shelby.name).toStrictEqual('shelby');
-    expect(commands.shelby.outputFunction()).toStrictEqual('hi this is shelby');
+test('each property of the returned object holds the correct value', async () => {
+    assert.strictEqual(commands.shelby.name, 'shelby');
+    assert.strictEqual(commands.shelby.outputFunction(), 'hi this is shelby');
     // default value before execution
-    expect(commands.shelby.onCooldown).toStrictEqual(false);
+    assert.isFalse(commands.shelby.onCooldown);
     // default value
-    expect(commands.shelby.options.cooldown_ms).toStrictEqual(10000);
+    assert.strictEqual(commands.shelby.options.cooldown_ms, 10000);
     // default value
-    expect(commands.shelby.options.modOnly).toStrictEqual(false);
+    assert.isFalse(commands.shelby.options.modOnly);
 
-    expect(commands.renee.name).toStrictEqual('renee');
-    expect(commands.renee.outputFunction()).toStrictEqual('hi this is renee');
-    expect(commands.renee.onCooldown).toStrictEqual(false);
-    expect(commands.renee.options.cooldown_ms).toStrictEqual(500);
-    expect(commands.renee.options.modOnly).toStrictEqual(false);
+    assert.strictEqual(commands.renee.name, 'renee');
+    assert.strictEqual(commands.renee.outputFunction(), 'hi this is renee');
+    assert.isFalse(commands.renee.onCooldown);
+    assert.strictEqual(commands.renee.options.cooldown_ms, 500);
+    assert.isFalse(commands.renee.options.modOnly);
 
-    expect(commands.esme.name).toStrictEqual('esme');
-    expect(commands.esme.outputFunction()).toStrictEqual('hi this is esme');
-    expect(commands.esme.onCooldown).toStrictEqual(false);
-    expect(commands.esme.options.cooldown_ms).toStrictEqual(10000);
-    expect(commands.esme.options.modOnly).toStrictEqual(true);
+    assert.strictEqual(commands.esme.name, 'esme');
+    assert.strictEqual(commands.esme.outputFunction(), 'hi this is esme');
+    assert.isFalse(commands.esme.onCooldown);
+    assert.strictEqual(commands.esme.options.cooldown_ms, 10000);
+    assert.isTrue(commands.esme.options.modOnly);
 
-    expect(commands.jasper.name).toStrictEqual('jasper');
-    expect(commands.jasper.outputFunction()).toStrictEqual('hi this is jasper');
-    expect(commands.jasper.onCooldown).toStrictEqual(false);
-    expect(commands.jasper.options.cooldown_ms).toStrictEqual(1500);
-    expect(commands.jasper.options.modOnly).toStrictEqual(true);
+    assert.strictEqual(commands.jasper.name, 'jasper');
+    assert.strictEqual(commands.jasper.outputFunction(), 'hi this is jasper');
+    assert.isFalse(commands.jasper.onCooldown);
+    assert.strictEqual(commands.jasper.options.cooldown_ms, 1500);
+    assert.isTrue(commands.jasper.options.modOnly);
 
-    expect(commands.bella.name).toStrictEqual('bella');
-    expect(commands.bella.outputFunction()).toStrictEqual('hi this is bella');
-    expect(commands.bella.onCooldown).toStrictEqual(false);
-    expect(commands.bella.options.cooldown_ms).toStrictEqual(10000);
-    expect(commands.bella.options.modOnly).toStrictEqual(false);
+    assert.strictEqual(commands.bella.name, 'bella');
+    assert.strictEqual(commands.bella.outputFunction(), 'hi this is bella');
+    assert.isFalse(commands.bella.onCooldown);
+    assert.strictEqual(commands.bella.options.cooldown_ms, 10000);
+    assert.isFalse(commands.bella.options.modOnly);
     // single aliases should get placed in an array
-    expect(commands.bella.options.aliases).toStrictEqual(['bellabie']);
+    assert.deepEqual(commands.bella.options.aliases, ['bellabie']);
 
-    expect(commands.edward.name).toStrictEqual('edward');
-    expect(commands.edward.outputFunction()).toStrictEqual('hi this is edward');
-    expect(commands.edward.onCooldown).toStrictEqual(false);
-    expect(commands.edward.options.cooldown_ms).toStrictEqual(10000);
-    expect(commands.edward.options.modOnly).toStrictEqual(false);
+    assert.strictEqual(commands.edward.name, 'edward');
+    assert.strictEqual(commands.edward.outputFunction(), 'hi this is edward');
+    assert.isFalse(commands.edward.onCooldown);
+    assert.strictEqual(commands.edward.options.cooldown_ms, 10000);
+    assert.isFalse(commands.edward.options.modOnly);
     // multiple aliases
-    expect(commands.edward.options.aliases).toStrictEqual(['edwina', 'eduardo']);
+    assert.deepEqual(commands.edward.options.aliases, ['edwina', 'eduardo']);
 
     const testMessage = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!forever edward bella', false);
 
-    expect(commands.forever.name).toStrictEqual('forever');
-    expect(commands.forever.outputFunction(testMessage)).toStrictEqual('bella edward forever');
-    expect(commands.forever.onCooldown).toStrictEqual(false);
-    expect(commands.forever.options.cooldown_ms).toStrictEqual(10000);
-    expect(commands.forever.options.modOnly).toStrictEqual(false);
-    expect(commands.forever.options.refsMessage).toStrictEqual(true);
+    assert.strictEqual(commands.forever.name, 'forever');
+    assert.strictEqual(commands.forever.outputFunction(testMessage), 'bella edward forever');
+    assert.isFalse(commands.forever.onCooldown);
+    assert.strictEqual(commands.forever.options.cooldown_ms, 10000);
+    assert.isFalse(commands.forever.options.modOnly);
+    assert.isTrue(commands.forever.options.refsMessage);
 
-    expect(commands.alice.name).toStrictEqual('alice');
-    expect(commands.alice.outputFunction()).resolves.toStrictEqual('hi this is alice');
-    expect(commands.alice.onCooldown).toStrictEqual(false);
-    expect(commands.alice.options.cooldown_ms).toStrictEqual(10000);
-    expect(commands.alice.options.modOnly).toStrictEqual(false);
-    expect(commands.alice.options.refsMessage).toStrictEqual(false);
+    assert.strictEqual(commands.alice.name, 'alice');
+    assert.strictEqual(await commands.alice.outputFunction(), 'hi this is alice');
+    assert.isFalse(commands.alice.onCooldown);
+    assert.strictEqual(commands.alice.options.cooldown_ms, 10000);
+    assert.isFalse(commands.alice.options.modOnly);
+    assert.isFalse(commands.alice.options.refsMessage);
     
-    expect(commands.jacob.name).toStrictEqual('jacob');
-    expect(commands.jacob.outputFunction()).toBeUndefined();
-    expect(commands.jacob.onCooldown).toStrictEqual(false);
-    expect(commands.jacob.options.cooldown_ms).toStrictEqual(10000);
-    expect(commands.jacob.options.modOnly).toStrictEqual(false);
-    expect(commands.jacob.options.refsMessage).toStrictEqual(false);
-    expect(commands.jacob.options.aliases).toStrictEqual(['jacobs']);
+    assert.strictEqual(commands.jacob.name, 'jacob');
+    assert.isUndefined(commands.jacob.outputFunction());
+    assert.isFalse(commands.jacob.onCooldown);
+    assert.strictEqual(commands.jacob.options.cooldown_ms, 10000);
+    assert.isFalse(commands.jacob.options.modOnly);
+    assert.isFalse(commands.jacob.options.refsMessage);
+    assert.deepEqual(commands.jacob.options.aliases, ['jacobs']);
 });
 
 test('aliases build out correctly', () => {
