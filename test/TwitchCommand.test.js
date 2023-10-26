@@ -93,32 +93,41 @@ test('each property of the returned object holds the correct value', async () =>
     assert.isFalse(commands.jacob.options.modOnly);
     assert.isFalse(commands.jacob.options.refsMessage);
     assert.deepEqual(commands.jacob.options.aliases, ['jacobs']);
+    
 });
 
 test('aliases build out correctly', () => {
-    expect(commands.bellabie.name).toStrictEqual('bella');
-    expect(commands.bellabie.outputFunction()).toStrictEqual('hi this is bella');
-    expect(commands.bellabie.onCooldown).toStrictEqual(false);
-    expect(commands.bellabie.options.cooldown_ms).toStrictEqual(10000);
-    expect(commands.bellabie.options.modOnly).toStrictEqual(false);
+    assert.strictEqual(commands.bellabie.name, 'bella');
+    assert.strictEqual(commands.bellabie.outputFunction(), 'hi this is bella');
+    assert.isFalse(commands.bellabie.onCooldown);
+    assert.strictEqual(commands.bellabie.options.cooldown_ms, 10000);
+    assert.isFalse(commands.bellabie.options.modOnly);
     // single aliases should get placed in an array
-    expect(commands.bellabie.options.aliases).toStrictEqual(['bellabie']);
+    assert.deepEqual(commands.bellabie.options.aliases, ['bellabie']);
 
-    expect(commands.edwina.name).toStrictEqual('edward');
-    expect(commands.edwina.outputFunction()).toStrictEqual('hi this is edward');
-    expect(commands.edwina.onCooldown).toStrictEqual(false);
-    expect(commands.edwina.options.cooldown_ms).toStrictEqual(10000);
-    expect(commands.edwina.options.modOnly).toStrictEqual(false);
+    assert.strictEqual(commands.eduardo.name, 'edward');
+    assert.strictEqual(commands.eduardo.outputFunction(), 'hi this is edward');
+    assert.isFalse(commands.eduardo.onCooldown);
+    assert.strictEqual(commands.eduardo.options.cooldown_ms, 10000);
+    assert.isFalse(commands.eduardo.options.modOnly);
     // multiple aliases
-    expect(commands.edwina.options.aliases).toStrictEqual(['edwina', 'eduardo']);
+    assert.deepEqual(commands.eduardo.options.aliases, ['edwina', 'eduardo']);
 
-    expect(commands.eduardo.name).toStrictEqual('edward');
-    expect(commands.eduardo.outputFunction()).toStrictEqual('hi this is edward');
-    expect(commands.eduardo.onCooldown).toStrictEqual(false);
-    expect(commands.eduardo.options.cooldown_ms).toStrictEqual(10000);
-    expect(commands.eduardo.options.modOnly).toStrictEqual(false);
+    assert.strictEqual(commands.eduardo.name, 'edward');
+    assert.strictEqual(commands.eduardo.outputFunction(), 'hi this is edward');
+    assert.isFalse(commands.eduardo.onCooldown);
+    assert.strictEqual(commands.eduardo.options.cooldown_ms, 10000);
+    assert.isFalse(commands.eduardo.options.modOnly);
     // multiple aliases
-    expect(commands.eduardo.options.aliases).toStrictEqual(['edwina', 'eduardo']);
+    assert.deepEqual(commands.eduardo.options.aliases, ['edwina', 'eduardo']);
+
+    assert.strictEqual(commands.jacobs.name, 'jacob');
+    assert.isUndefined(commands.jacobs.outputFunction());
+    assert.isFalse(commands.jacobs.onCooldown);
+    assert.strictEqual(commands.jacobs.options.cooldown_ms, 10000);
+    assert.isFalse(commands.jacobs.options.modOnly);
+    assert.isFalse(commands.jacobs.options.refsMessage);
+    assert.deepEqual(commands.jacobs.options.aliases, ['jacobs']);
 });
 
 // this will also need to go elsewhere I think
