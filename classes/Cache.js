@@ -8,6 +8,9 @@ export default class Cache {
     try {
       cache = JSON.parse(readFileSync(this.filePath, 'utf-8'));
     } catch(e) {
+      if (!e.message.includes('no such file or directory, open')) {
+          throw e;
+      }
       console.log(e);
       writeFileSync(this.filePath, '{}');
       cache = {};
