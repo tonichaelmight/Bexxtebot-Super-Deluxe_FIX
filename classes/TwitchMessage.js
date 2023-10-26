@@ -1,3 +1,4 @@
+// fully covered 
 import TwitchResponse from './TwitchResponse.js';
 
 export default class TwitchMessage {
