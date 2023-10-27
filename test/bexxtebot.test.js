@@ -2,6 +2,7 @@ import { TwitchCommand, AsyncTwitchCommand, TwitchCounterCommand } from "../clas
 import Timer from "../classes/Timer";
 import LogHandler from "../classes/LogHandler";
 import Bot from "../classes/Bot";
+import { assert } from "chai";
 
 const botName = 'bexxteFake';
 const broadcastingChannel = 'tonichaelmight'
@@ -55,9 +56,10 @@ const bexxteFake = new Bot(botName, broadcastingChannel, token, clientID, comman
 export default bexxteFake;
 
 test('the bot comes out with the correct properties', () => {
-  expect(bexxteFake).toHaveProperty('name');
-  expect(bexxteFake).toHaveProperty('channel');
-  expect(bexxteFake).toHaveProperty('token');
-  expect(bexxteFake).toHaveProperty('logger');
-  expect(bexxteFake).toHaveProperty('streamer');
+  assert.property(bexxteFake, 'name');
+  assert.property(bexxteFake, 'channel');
+  assert.property(bexxteFake, 'token');
+  assert.property(bexxteFake, 'clientID');
+  assert.property(bexxteFake, 'logger');
+  assert.property(bexxteFake, 'streamer');
 })
