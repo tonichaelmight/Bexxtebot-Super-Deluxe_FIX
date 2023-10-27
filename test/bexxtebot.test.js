@@ -39,7 +39,7 @@ const commands = {
       return `Chat has been jacobed haha that's (at least) ${evaluation.endValue} jacobs`;
     },
     show: evaluation => {
-      return `there are ${evaluation.endValue} jacobs`;
+      return `There are ${evaluation.endValue} jacobs`;
     }
   },
     {

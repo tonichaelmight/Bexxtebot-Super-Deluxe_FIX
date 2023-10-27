@@ -1,3 +1,4 @@
+// fully covered
 // if you're trying to make a new command, this is the right page; scroll down a bit further
 
 // Basic commands will yield the same output every time they are executed -- foundation for more specialized command types
@@ -97,6 +98,7 @@ export class TwitchCounterCommand extends TwitchCommand {
   constructor(name, outputs, options={}) {
     super(name, undefined, options);
     this.outputs = outputs;
+    this.options.modOnly = true;
   }
 
   evaluateMessage(messageObject) {
@@ -159,11 +161,7 @@ export class TwitchCounterCommand extends TwitchCommand {
   async execute(messageObject) {
     if (this.quitFromModeration(messageObject)) return;
 
-    let evaluation;
-
-    if (messageObject.tags.mod || messageObject.tags.username === messageObject.channel.slice(1)) {
-      evaluation = this.evaluateMessage(messageObject);
-    }
+    let evaluation = this.evaluateMessage(messageObject);
 
     this.triggerCooldown();
 
