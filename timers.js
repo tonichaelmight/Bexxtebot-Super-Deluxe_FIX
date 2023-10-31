@@ -30,7 +30,7 @@ const crypticismsTimer = new Timer('crypticisms', 3600, 7200, {
         'slaying...',
         'promoting equality...',
         'relaxing...',
-        'smoking a fat j...',
+        // 'smoking a fat j...',
         'hyperfixating...',
         'grabbing brunch and champagne with my girlies...',
         'watching out for the killer...',
