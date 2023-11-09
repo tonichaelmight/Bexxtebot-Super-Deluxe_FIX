@@ -4,7 +4,7 @@ import LogHandler from "../classes/LogHandler";
 import Bot from "../classes/Bot";
 import { assert } from "chai";
 
-// import 'dotenv/config';
+import 'dotenv/config';
 
 const BEXXTEBOT_TOKEN = process.env.BEXXTEBOT_TOKEN;
 const CLIENT_ID = process.envCLIENT_ID;
