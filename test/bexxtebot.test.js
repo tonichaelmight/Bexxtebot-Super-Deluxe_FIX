@@ -4,10 +4,8 @@ import LogHandler from "../classes/LogHandler";
 import Bot from "../classes/Bot";
 import { assert } from "chai";
 
-const botName = 'bexxteFake';
-const broadcastingChannel = 'tonichaelmight'
-const token = 12345;
-const clientID = 67890;
+const BEXXTEBOT_TOKEN = process.env.BEXXTEBOT_TOKEN;
+const CLIENT_ID = process.env.CLIENT_ID;
 const commands = {
   shelby: new TwitchCommand('shelby', 'hi this is shelby'),
   renee: new TwitchCommand('renee', 'hi this is renee', { cooldown_ms: 500 }),
@@ -55,7 +53,7 @@ const config = {
   botName: 'bexxteFake'
 };
 
-const bexxteFake = new Bot(config.botName, config.broadcastingChannel, token, clientID, commands, timers, new LogHandler(), config);
+const bexxteFake = new Bot(config.botName, config.broadcastingChannel, BEXXTEBOT_TOKEN, CLIENT_ID, commands, timers, new LogHandler(), config);
 
 export default bexxteFake;
 
