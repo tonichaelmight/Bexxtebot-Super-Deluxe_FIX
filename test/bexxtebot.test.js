@@ -4,8 +4,10 @@ import LogHandler from "../classes/LogHandler";
 import Bot from "../classes/Bot";
 import { assert } from "chai";
 
-const BEXXTEBOT_TOKEN = process.env.BEXXTEBOT_TOKEN;
-const CLIENT_ID = process.env.CLIENT_ID;
+import 'dotenv/config';
+
+const BEXXTEBOT_TOKEN = process.env['BEXXTEBOT_TOKEN'];
+const CLIENT_ID = process.env['CLIENT_ID'];
 const commands = {
   shelby: new TwitchCommand('shelby', 'hi this is shelby'),
   renee: new TwitchCommand('renee', 'hi this is renee', { cooldown_ms: 500 }),

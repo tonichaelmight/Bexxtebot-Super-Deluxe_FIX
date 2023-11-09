@@ -1,6 +1,7 @@
 import { assert } from "chai";
 import bexxteFake from "./bexxtebot.test";
 import TwitchMessage from "../classes/TwitchMessage";
+import { wait } from "../util";
 
 test('bot properties come out with correct values', () => {
     assert.strictEqual(bexxteFake.name, 'bexxteFake');
@@ -16,7 +17,9 @@ test('bot properties come out with correct values', () => {
 // no way to test establishTwitchClient()
 test('successfully connects to twitch', async () => {
     await bexxteFake.establishTwitchClient();
+    await wait(1000);
     await bexxteFake.twitchClient.disconnect();
+    delete bexxteFake.twitchClient
     assert.isOk(true);
 })
 

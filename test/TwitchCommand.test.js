@@ -6,6 +6,7 @@ const { commands } = bexxteFake.streamer;
 
 import TwitchMessage from '../classes/TwitchMessage';
 import { assert } from 'chai';
+import { wait } from '../util.js';
 
 test('returns an object with "name", "outputFunction", "onCooldown", "options.cooldown_ms", and "options.modOnly" properties', () => {
 
@@ -129,15 +130,6 @@ test('aliases build out correctly', () => {
     assert.isFalse(commands.jacobs.options.refsMessage);
     assert.deepEqual(commands.jacobs.options.aliases, ['jacobs']);
 });
-
-function wait(ms) {
-    return new Promise((resolve, reject) => {
-        const ref = setTimeout(() => {
-            ref.unref();
-            resolve(true);
-        }, ms);
-    })
-}
 
 test('createCooldown() creates a cooldown', async () => {
     assert.isFalse(commands.renee.onCooldown);
