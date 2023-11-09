@@ -49,7 +49,9 @@ const commands = {
   )
 };
 const timers = [];
-const config = {};
+const config = {
+  forbidden: ['reylo']
+};
 
 const bexxteFake = new Bot(botName, broadcastingChannel, token, clientID, commands, timers, new LogHandler(), config);
 
