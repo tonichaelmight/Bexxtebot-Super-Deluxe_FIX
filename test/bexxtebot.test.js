@@ -52,7 +52,7 @@ const timers = [];
 const config = {
   forbidden: ['reylo'],
   broadcastingChannel: 'tonichaelmight',
-  botName: 'bexxteFake;
+  botName: 'bexxteFake'
 };
 
 const bexxteFake = new Bot(config.botName, config.broadcastingChannel, token, clientID, commands, timers, new LogHandler(), config);
