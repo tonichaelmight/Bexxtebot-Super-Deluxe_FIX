@@ -4,12 +4,19 @@ jobs:
   run-test-suite:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - name: Git Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 16
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
+
+      - name: Install Node packages
+        run: npm install
+
+      - name: Run Jest tests
+        run: npm test
         env:
           BEXXTEBOT_TOKEN: ${{ secrets.BEXXTEBOT_TOKEN }}
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      - run: npm install
-      - run: npm test
