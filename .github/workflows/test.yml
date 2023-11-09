@@ -8,5 +8,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+          BEXXTEBOT_TOKEN: ${{ secrets.BEXXTEBOT_TOKEN }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
       - run: npm install
       - run: npm test

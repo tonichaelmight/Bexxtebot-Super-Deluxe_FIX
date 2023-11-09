@@ -62,7 +62,7 @@ export default class Bot {
   }
 
   // assesses a twitch message to see if it has a command structure ("!lurk" anywhere in a message, or any message beginning with "!")
-  async searchForTwitchCommand(twitchMessage) {
+  searchForTwitchCommand(twitchMessage) {
 
     // lurk is built different; can be used anywhere in a message, not just the beginning
     const lurkCheck = /(?<!(\w))!lurk(?!(\w))/;
@@ -140,7 +140,7 @@ export default class Bot {
       return;
     }
 
-    const command = await this.searchForTwitchCommand(twitchMessage);
+    const command = this.searchForTwitchCommand(twitchMessage);
     await this.executeTwitchCommand(twitchMessage, command);
 
     // only speak if she has something to say

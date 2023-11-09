@@ -50,10 +50,12 @@ const commands = {
 };
 const timers = [];
 const config = {
-  forbidden: ['reylo']
+  forbidden: ['reylo'],
+  broadcastingChannel: 'tonichaelmight',
+  botName: 'bexxteFake;
 };
 
-const bexxteFake = new Bot(botName, broadcastingChannel, token, clientID, commands, timers, new LogHandler(), config);
+const bexxteFake = new Bot(config.botName, config.broadcastingChannel, token, clientID, commands, timers, new LogHandler(), config);
 
 export default bexxteFake;
 
