@@ -15,6 +15,8 @@ export default class Bot {
 
   // estabishes a client that can read and send messages from/to Twitch
   async establishTwitchClient() {
+    console.log(this.token);
+    console.log(this.clientID);
     
     this.twitchClient = new twitch.Client({
       options: {
