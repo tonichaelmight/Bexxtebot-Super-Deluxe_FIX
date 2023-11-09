@@ -5,8 +5,10 @@ import TwitchMessage from "../classes/TwitchMessage";
 test('bot properties come out with correct values', () => {
     assert.strictEqual(bexxteFake.name, 'bexxteFake');
     assert.strictEqual(bexxteFake.channel, 'tonichaelmight');
-    assert.strictEqual(bexxteFake.token, 12345);
-    assert.strictEqual(bexxteFake.clientID, 67890);
+
+    // don't want to actually code in the real values here
+    // assert.strictEqual(bexxteFake.token, 12345);
+    // assert.strictEqual(bexxteFake.clientID, 67890);
     
 });
 
