@@ -27,6 +27,8 @@ const commands = {
 
   prime: new TwitchCommand('prime', 'Link your amazon prime to twitch to get a free sub every month and put those Bezos Bucks to work'),
 
+  //model: new TwitchCommand('model', 'Model Credit: https://twitter.com/PaimaModels/status/1686512394602758144'),
+  
   raid: new TwitchCommand('raid', "Welcome and thank you for the raid! When people raid, they sadly don't count to twitch averages, so it would be a big help if you could get rid of the '?referrer=raid' in the url! I appreciate you so much! bexxteLove", { cooldown_ms: 0, modOnly: true }),
 
   socials: new TwitchCommand('socials', `Come follow me on these other platforms as well!         
