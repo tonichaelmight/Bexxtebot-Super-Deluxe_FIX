@@ -2,11 +2,12 @@ import { TwitchCommand, AsyncTwitchCommand, TwitchCounterCommand } from "../clas
 import Timer from "../classes/Timer";
 import LogHandler from "../classes/LogHandler";
 import Bot from "../classes/Bot";
+import { assert } from "chai";
 
-const botName = 'bexxteFake';
-const broadcastingChannel = 'tonichaelmight'
-const token = 12345;
-const clientID = 67890;
+import 'dotenv/config';
+
+const BEXXTEBOT_TOKEN = process.env['BEXXTEBOT_TOKEN'];
+const CLIENT_ID = process.env['envCLIENT_ID'];
 const commands = {
   shelby: new TwitchCommand('shelby', 'hi this is shelby'),
   renee: new TwitchCommand('renee', 'hi this is renee', { cooldown_ms: 500 }),
@@ -39,7 +40,7 @@ const commands = {
       return `Chat has been jacobed haha that's (at least) ${evaluation.endValue} jacobs`;
     },
     show: evaluation => {
-      return `there are ${evaluation.endValue} jacobs`;
+      return `There are ${evaluation.endValue} jacobs`;
     }
   },
     {
@@ -48,16 +49,21 @@ const commands = {
   )
 };
 const timers = [];
-const config = {};
+const config = {
+  forbidden: ['reylo'],
+  broadcastingChannel: 'tonichaelmight',
+  botName: 'bexxteFake'
+};
 
-const bexxteFake = new Bot(botName, broadcastingChannel, token, clientID, commands, timers, new LogHandler(), config);
+const bexxteFake = new Bot(config.botName, config.broadcastingChannel, BEXXTEBOT_TOKEN, CLIENT_ID, commands, timers, new LogHandler(), config);
 
 export default bexxteFake;
 
 test('the bot comes out with the correct properties', () => {
-  expect(bexxteFake).toHaveProperty('name');
-  expect(bexxteFake).toHaveProperty('channel');
-  expect(bexxteFake).toHaveProperty('token');
-  expect(bexxteFake).toHaveProperty('logger');
-  expect(bexxteFake).toHaveProperty('streamer');
+  assert.property(bexxteFake, 'name');
+  assert.property(bexxteFake, 'channel');
+  assert.property(bexxteFake, 'token');
+  assert.property(bexxteFake, 'clientID');
+  assert.property(bexxteFake, 'logger');
+  assert.property(bexxteFake, 'streamer');
 })

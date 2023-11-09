@@ -6,6 +6,7 @@ const { commands } = bexxteFake.streamer;
 
 import TwitchMessage from '../classes/TwitchMessage';
 import { assert } from 'chai';
+import { wait } from '../util.js';
 
 test('returns an object with "name", "outputFunction", "onCooldown", "options.cooldown_ms", and "options.modOnly" properties', () => {
 
@@ -90,7 +91,7 @@ test('each property of the returned object holds the correct value', async () =>
     assert.isUndefined(commands.jacob.outputFunction());
     assert.isFalse(commands.jacob.onCooldown);
     assert.strictEqual(commands.jacob.options.cooldown_ms, 10000);
-    assert.isFalse(commands.jacob.options.modOnly);
+    assert.isTrue(commands.jacob.options.modOnly);
     assert.isFalse(commands.jacob.options.refsMessage);
     assert.deepEqual(commands.jacob.options.aliases, ['jacobs']);
     
@@ -125,21 +126,10 @@ test('aliases build out correctly', () => {
     assert.isUndefined(commands.jacobs.outputFunction());
     assert.isFalse(commands.jacobs.onCooldown);
     assert.strictEqual(commands.jacobs.options.cooldown_ms, 10000);
-    assert.isFalse(commands.jacobs.options.modOnly);
+    assert.isTrue(commands.jacobs.options.modOnly);
     assert.isFalse(commands.jacobs.options.refsMessage);
     assert.deepEqual(commands.jacobs.options.aliases, ['jacobs']);
 });
-
-// this will also need to go elsewhere I think
-
-function wait(ms) {
-    return new Promise((resolve, reject) => {
-        const ref = setTimeout(() => {
-            ref.unref();
-            resolve(true);
-        }, ms);
-    })
-}
 
 test('createCooldown() creates a cooldown', async () => {
     assert.isFalse(commands.renee.onCooldown);
@@ -149,8 +139,7 @@ test('createCooldown() creates a cooldown', async () => {
     assert.isTrue(commands.renee.onCooldown);
     await wait(15);
     assert.isFalse(commands.renee.onCooldown);
-})
-
+});
 
 test('execute() works', async () => {
     const testMessage = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!shelby', false);
@@ -187,6 +176,22 @@ test('moderation is effective', () => {
     assert.notProperty(testMessage3, 'response');
 });
 
+test('counter commands are modOnly by default', () => {
+    const testMessage1 = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!jacob', false);
+    const testMessage2 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', mod: true }, '!jacob', false);
+    const testMessage3 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', badges: { vip: 1 } }, '!jacob', false);
+    commands.jacob.execute(testMessage1);
+    assert.notProperty(testMessage1, 'response');
+
+    commands.jacob.execute(testMessage2);
+    assert.property(testMessage2, 'response');
+    assert.lengthOf(testMessage2.response, 1);
+    assert.match(testMessage2.response[0].output, /Chat has been jacobed haha that's \(at least\) \d+ jacobs/);
+
+    commands.jacob.execute(testMessage3);
+    assert.notProperty(testMessage3, 'response');
+});
+
 test('createCooldown() is effective in execution', () => {
     const testMessage1 = new TwitchMessage('#tonichaelmight', { username: 'bexxters' }, '!bella', false);
     const testMessage2 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', mod: true }, '!bella', false);
@@ -211,3 +216,20 @@ test('createCooldown() is effective in execution', () => {
     assert.isUndefined(testMessage3.response);
 });
 
+test('counter command works', () => {
+    const testMessage1 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', mod: true }, '!jacob set n', false);
+    const testMessage2 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', mod: true }, '!jacob set 4', false);
+    const testMessage3 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', mod: true }, '!jacobs', false);
+   
+    commands.jacob.execute(testMessage1);
+    assert.property(testMessage1, 'response');
+    assert.match(testMessage1.response[0].output, /Sorry, I was not able to set !jacobs to \D+\. Please make sure you use a number. Currently, there are \d+ jacobs\./);
+
+    commands.jacob.execute(testMessage2);
+    assert.property(testMessage2, 'response');
+    assert.match(testMessage2.response[0].output, /You have set the number of jacobs to \d+/);
+
+    commands.jacob.execute(testMessage3);
+    assert.property(testMessage3, 'response');
+    assert.match(testMessage3.response[0].output, /There are \d+ jacobs/);
+});

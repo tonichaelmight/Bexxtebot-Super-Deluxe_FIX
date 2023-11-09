@@ -14,7 +14,7 @@ export default class Bot {
   }
 
   // estabishes a client that can read and send messages from/to Twitch
-  establishTwitchClient() {
+  async establishTwitchClient() {
     
     this.twitchClient = new twitch.Client({
       options: {
@@ -31,7 +31,7 @@ export default class Bot {
       channels: [this.channel]
     });
 
-    this.twitchClient.connect();
+    await this.twitchClient.connect();
 
     // listens for messages, determined by the "channels" property defined in the connection above
     this.twitchClient.on('message', async (channel, tags, message, self) => {
@@ -62,7 +62,7 @@ export default class Bot {
   }
 
   // assesses a twitch message to see if it has a command structure ("!lurk" anywhere in a message, or any message beginning with "!")
-  async searchForTwitchCommand(twitchMessage) {
+  searchForTwitchCommand(twitchMessage) {
 
     // lurk is built different; can be used anywhere in a message, not just the beginning
     const lurkCheck = /(?<!(\w))!lurk(?!(\w))/;
@@ -140,7 +140,7 @@ export default class Bot {
       return;
     }
 
-    const command = await this.searchForTwitchCommand(twitchMessage);
+    const command = this.searchForTwitchCommand(twitchMessage);
     await this.executeTwitchCommand(twitchMessage, command);
 
     // only speak if she has something to say
@@ -162,9 +162,9 @@ export default class Bot {
   }
 
   // top level command -- this is called directly in bexxtebot.js
-  run() {
+  async run() {
     try {
-      this.establishTwitchClient();
+      await this.establishTwitchClient();
       //this.establishDiscordClient();
       this.startTimers();
     } catch (e) {
