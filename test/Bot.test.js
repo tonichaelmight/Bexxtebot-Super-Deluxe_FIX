@@ -14,6 +14,11 @@ test('bot properties come out with correct values', () => {
 
 
 // no way to test establishTwitchClient()
+test('successfully connects to twitch', async () => {
+    await bexxteFake.establishTwitchClient();
+    await bexxteFake.twitchClient.disconnect();
+    assert.isOk(true);
+})
 
 // moderateTwitchMessage()
 test('bot-level moderation is effective', () => {
