@@ -6,8 +6,8 @@ import { assert } from "chai";
 
 import 'dotenv/config';
 
-const BEXXTEBOT_TOKEN = process.env.BEXXTEBOT_TOKEN;
-const CLIENT_ID = process.envCLIENT_ID;
+const BEXXTEBOT_TOKEN = process.env['BEXXTEBOT_TOKEN'];
+const CLIENT_ID = process.env['envCLIENT_ID'];
 const commands = {
   shelby: new TwitchCommand('shelby', 'hi this is shelby'),
   renee: new TwitchCommand('renee', 'hi this is renee', { cooldown_ms: 500 }),
