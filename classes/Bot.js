@@ -11,6 +11,9 @@ export default class Bot {
     this.clientID = clientID;
     this.logger = logger;
     this.streamer = new Streamer(channel, token, clientID, commands, timers, config, this);
+    this.searching = false;
+    this.searchCriteria = undefined;
+    this.found = undefined;
   }
 
   // estabishes a client that can read and send messages from/to Twitch
@@ -36,6 +39,12 @@ export default class Bot {
     // listens for messages, determined by the "channels" property defined in the connection above
     this.twitchClient.on('message', async (channel, tags, message, self) => {
       const twitchMessage = new TwitchMessage(channel, tags, message, self);
+
+      if (this.searching) {
+        if (twitchMessage.content === this.searchCriteria)  {
+          this.found = twitchMessage;
+        }
+      }
 
       try {
         // there are no errors expected here, so if something does happen it gets logged in error.txt and we keep the program running (otherwise bexxteBot stops :/ )
@@ -85,7 +94,6 @@ export default class Bot {
   async executeTwitchCommand(twitchMessage, command) {
     // check if command exists for streamer
     if (this.streamer.commands[command]) {
-
       // call the command's execute() method
       await this.streamer.commands[command].execute(twitchMessage);
     }
