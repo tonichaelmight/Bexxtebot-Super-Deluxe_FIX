@@ -79,7 +79,6 @@ test('speaking in twitch chat is successful', async () => {
 
     const testMessage1 = new TwitchMessage('#tonichaelmight', { username: 'bexxters', mod: true }, '!shelby', false);
     await bexxteFake.executeTwitchCommand(testMessage1, 'shelby');
-    console.log(testMessage1);
 
     bexxteFake.searching = true;
     bexxteFake.searchCriteria = testMessage1.response[0].output;
