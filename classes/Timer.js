@@ -66,7 +66,8 @@ export default class Timer {
           this.streamer.cache.setTimerCache(this.name, previous);
         } else {
           // resets the cached array for next stream
-          this.streamer.cache.setTimerCache(this.name, []);
+          // don't think I actually want this
+          // this.streamer.cache.setTimerCache(this.name, []);
           dummyMessage = null;
         }
         
