@@ -7,9 +7,9 @@ export default class Cache {
     let cache;
     try {
       cache = JSON.parse(readFileSync(this.filePath, 'utf-8'));
-    } catch(e) {
+    } catch (e) {
       if (!e.message.includes('no such file or directory, open')) {
-          throw e;
+        throw e;
       }
       cache = {};
     }
@@ -21,7 +21,7 @@ export default class Cache {
     writeFileSync(this.filePath, JSON.stringify(this.cache));
   }
 
-  getCommandCache(commandName, defaultValue=[]) {
+  getCommandCache(commandName, defaultValue = []) {
     if (!this.cache.commands) {
       this.cache.commands = {};
     }
@@ -39,7 +39,7 @@ export default class Cache {
     this.writeCache();
   }
 
-  getCountCache(commandName, defaultValue=0) {
+  getCountCache(commandName, defaultValue = 0) {
     if (!this.cache.counts) {
       this.cache.counts = {};
     }
@@ -57,7 +57,7 @@ export default class Cache {
     this.writeCache();
   }
 
-  getTimerCache(timerName, defaultValue=[]) {
+  getTimerCache(timerName, defaultValue = []) {
     if (!this.cache.timers) {
       this.cache.timers = {};
     }

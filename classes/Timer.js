@@ -2,7 +2,7 @@ import TwitchMessage from './TwitchMessage.js';
 
 // TIMER CLASS
 export default class Timer {
-  constructor(name, min, range, options={}) {
+  constructor(name, min, range, options = {}) {
     this.name = name;
     this.min = min * 1000;
     this.range = range * 1000;
@@ -25,7 +25,7 @@ export default class Timer {
     } else if (this.options.outputs) {
       return Math.floor(Math.random() * this.options.outputs.length)
     }
-    
+
   }
 
   async getTimerOutput() {
@@ -70,15 +70,15 @@ export default class Timer {
           // this.streamer.cache.setTimerCache(this.name, []);
           dummyMessage = null;
         }
-        
+
         resolve(dummyMessage);
 
       }, Math.floor(Math.random() * this.range) + this.min);
-    }); 
+    });
   }
 
   async start() {
-    while(true) {
+    while (true) {
       await this.getTimerOutput();
     }
   }

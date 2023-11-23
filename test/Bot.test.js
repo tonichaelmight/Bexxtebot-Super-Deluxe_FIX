@@ -125,14 +125,13 @@ test('speaking in twitch chat is successful', async () => {
 }, 5000)
 
 // processTwitchMessage()
-// assuming speakInTwitch() can be tested, this should also be doable
+// will need to test a variety of messages to ensure that the 
+// composite parts all work together correctly
+// moderation, searching, execution, speaking, logging error
 
 // startTimers()
-// seems like it would be tricky to pull off but we'll see!
+// would basically just need to set timers with really short windows and verify
+// that each of the outputs come up
 
 // run()
-// again would be tricky
-// I'm not sure how the .on('message') handler could be invoked
-// without a message being sent in the twitch chat
-// unless that could somehow be intercepted
-// will have to see!
+// this would be a combination effort of all the other functions p much
