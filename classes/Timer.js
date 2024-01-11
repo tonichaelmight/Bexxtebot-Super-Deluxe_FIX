@@ -1,11 +1,23 @@
 import TwitchMessage from './TwitchMessage.js';
 
+// setting testingMode to true will make it so that 
+// timers will execute regardless of whether or not 
+// the streamer is live
+// is also makes it so that timers activate
+// 1000 times as frequently, for ease of testing
+const testingMode = false;
+
 // TIMER CLASS
 export default class Timer {
   constructor(name, min, range, options={}) {
     this.name = name;
-    this.min = min * 1000;
-    this.range = range * 1000;
+    this.min = min;
+    this.range = range;
+
+    if (!testingMode) {
+      this.min *= 1000;
+      this.range *= 1000;
+    }
 
     this.options = {};
     this.options.commands = options.commands || undefined;
@@ -13,7 +25,7 @@ export default class Timer {
     this.options.outputs = options.outputs || undefined;
 
     const numChoices = this.options.commands?.length || this.options.outputs?.length || undefined;
-    if (!numChoices) throw new Error('something is wrong!');
+    if (!numChoices) throw new Error('there is a timer with no choices!');
 
     this.maxCacheStorage = Math.ceil(numChoices / 3);
     if (this.maxCacheStorage === numChoices) this.maxCacheStorage--;
@@ -25,22 +37,22 @@ export default class Timer {
     } else if (this.options.outputs) {
       return Math.floor(Math.random() * this.options.outputs.length)
     }
-    
+
   }
 
   async getTimerOutput() {
 
     return new Promise(resolve => {
       setTimeout(async () => {
-
         const streamerData = await this.streamer.getCurrentStreamerData();
-        const live = streamerData.is_live;
+        const live = testingMode ? true : streamerData.is_live;
         const currentGame = this.options.gameTitle ? streamerData.game_name : undefined;
 
         let dummyMessage;
 
         if (live && currentGame === this.options.gameTitle) {
-          let previous = this.streamer.cache.getTimerCache(this.name);
+          // let previous = this.streamer.cache.getTimerCache(this.name);
+          let previous = await this.streamer.bot.db.getTimerPrevious(this.name);
           let i = this.getRandomIndex();
           while (previous.includes(i)) {
             i = this.getRandomIndex();
@@ -63,14 +75,15 @@ export default class Timer {
             previous.shift();
           }
 
-          this.streamer.cache.setTimerCache(this.name, previous);
+          // this.streamer.cache.setTimerCache(this.name, previous);
+          this.streamer.bot.db.setTimerPrevious(this.name, previous);
         } else {
           // resets the cached array for next stream
           // don't think I actually want this
           // this.streamer.cache.setTimerCache(this.name, []);
           dummyMessage = null;
         }
-        
+
         resolve(dummyMessage);
 
       }, Math.floor(Math.random() * this.range) + this.min);

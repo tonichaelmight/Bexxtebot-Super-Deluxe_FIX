@@ -4,12 +4,13 @@ import TwitchMessage from './TwitchMessage.js';
 import Streamer from './Streamer.js';
 
 export default class Bot {
-  constructor(name, channel, token, clientID, commands, timers, logger, config) {
+  constructor(name, channel, token, clientID, commands, timers, logger, config, db) {
     this.name = name;
     this.channel = channel;
     this.token = token;
     this.clientID = clientID;
     this.logger = logger;
+    this.db = db;
     this.streamer = new Streamer(channel, token, clientID, commands, timers, config, this);
     this.searching = false;
     this.searchCriteria = undefined;
@@ -18,7 +19,7 @@ export default class Bot {
 
   // estabishes a client that can read and send messages from/to Twitch
   async establishTwitchClient() {
-    
+
     this.twitchClient = new twitch.Client({
       options: {
         debug: true
@@ -139,9 +140,9 @@ export default class Bot {
 
   // passes twitch messages through moderation and then looks for a command. sends a response message in twitch if one is created
   async processTwitchMessage(twitchMessage) {
-    
+
     this.moderateTwitchMessage(twitchMessage);
-    
+
     if (twitchMessage.response) {
       this.speakInTwitch(twitchMessage);
       // if a message gets modded, any commands will be ignored

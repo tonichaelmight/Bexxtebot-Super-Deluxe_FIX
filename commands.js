@@ -1,7 +1,6 @@
 import { TwitchCommand, AsyncTwitchCommand, TwitchCounterCommand } from './classes/TwitchCommand.js';
 import Streamer from './classes/Streamer.js';
 import bexxteConfig from './configuration.js';
-import 'fs';
 
 const commands = {
 
@@ -13,22 +12,24 @@ const commands = {
 
   bexxtebot: new TwitchCommand('bexxtebot', 'Hey there everyone, my name is BexxteBot! I am a custom chat bot designed specifically for this channel; if you see me do or say anything crazy, make sure to let @bexxters or @tonichaelmight know so that it can be fixed ASAP. Happy Chatting! bexxteLove'),
 
-  blm: new TwitchCommand('blm', 'Black Lives Matter. Follow this link to learn about ways you can support the movement: https://blacklivesmatters.carrd.co'),
+  //blm: new TwitchCommand('blm', 'Black Lives Matter. Follow this link to learn about ways you can support the movement: https://blacklivesmatters.carrd.co'),
 
   bttv: new TwitchCommand('bttv', 'Install bttv here (https://betterttv.com/) to use these cool emotes: blobDance catblobDance'),
+
+  //bingo: new TwitchCommand('bingo', 'Make a bingo card here: https://bingobaker.com#65726140100e7a37'),
 
   discord: new TwitchCommand('discord', `Join the Basement Party and hang out offline here: ${bexxteConfig.discordServerLink}`),
 
   follow: new TwitchCommand('follow', 'Hit the <3 to follow and get notified whenever I go live! It also makes my cold heart a little bit warmer!'),
 
-  newvid: new TwitchCommand('newvid', `Check out the most recent upload! ${bexxteConfig.newvid}`),
+  //newvid: new TwitchCommand('newvid', `Check out the most recent upload! ${bexxteConfig.newvid}`),
 
   highlights: new TwitchCommand('highlights', `Check out our monthly highlight video! ${bexxteConfig.highlights}`),
 
   prime: new TwitchCommand('prime', 'Link your amazon prime to twitch to get a free sub every month and put those Bezos Bucks to work'),
 
-  //model: new TwitchCommand('model', 'Model Credit: https://twitter.com/PaimaModels/status/1686512394602758144'),
-  
+  //nqny: new TwitchCommand('nqny', "December 30th is Not Quite New Years: Round 4! Starting at 2PM eastern I'll be streaming for twelve hours as a celebration for this past year of streams and party with chat! We've got a bunch of fun planed such as goofy speedruns, Best & Worst of the Year tier lists, Sister co-op Elden Ring, Steam Giftcard Giveaways, and more!"),
+
   raid: new TwitchCommand('raid', "Welcome and thank you for the raid! When people raid, they sadly don't count to twitch averages, so it would be a big help if you could get rid of the '?referrer=raid' in the url! I appreciate you so much! bexxteLove", { cooldown_ms: 0, modOnly: true }),
 
   socials: new TwitchCommand('socials', `Come follow me on these other platforms as well!         
@@ -62,15 +63,16 @@ const commands = {
 
   marta: new TwitchCommand('marta', 'Check out (and maybe commission) our UwUest mod and amazing artist Marta over at https://twitter.com/_martuwu or https://martuwuu.carrd.co', { cooldown_ms: 5000 }),
 
-  tim: new TwitchCommand('tim', 'my partner of 7 years. person I complain to when my stream randomly dies. pretty cool dude.', { cooldown_ms: 5000 }),
+  tim: new TwitchCommand('tim', 'my partner of 8 years. person I complain to when my stream randomly dies. pretty cool dude.', { cooldown_ms: 5000 }),
 
   yackie: new TwitchCommand('yackie', 'Check out one of my bestest buds and overall cool gal Jackie at twitch.tv/broocat!', { cooldown_ms: 5000 }),
 
   // EXCEPT HER
 
-  michael: new TwitchCommand('michael',
-    function() {
-      let currentCache = this.streamer.cache.getCommandCache(this.name);
+  michael: new AsyncTwitchCommand('michael',
+    async function() {
+      // let currentCache = this.streamer.cache.getCommandCache(this.name);
+      let currentCache = await this.streamer.bot.db.getCommandPrevious(this.name);
       const michaelQuotes = bexxteConfig.michaelQuotes;
       let i;
       do {
@@ -85,7 +87,8 @@ const commands = {
         currentCache.shift();
       }
 
-      this.streamer.cache.setCommandCache(this.name, currentCache);
+      // this.streamer.cache.setCommandCache(this.name, currentCache);
+      await this.streamer.bot.db.setCommandPrevious(this.name, currentCache);
 
       return `Humor King tonichaelmight aka my best friend for over half my life??? we're old. As he once said: "${bexxteConfig.michaelQuotes[i]}"`;
     }
@@ -128,9 +131,10 @@ const commands = {
     }
   ),
 
-  quote: new TwitchCommand('quote',
-    function() {
-      let currentCache = this.streamer.cache.getCommandCache(this.name);
+  quote: new AsyncTwitchCommand('quote',
+    async function() {
+      // let currentCache = this.streamer.cache.getCommandCache(this.name);
+      let currentCache = await this.streamer.bot.db.getCommandPrevious(this.name);
       const bekkaQuotes = bexxteConfig.quotes;
       let i;
       do {
@@ -145,8 +149,9 @@ const commands = {
         currentCache.shift();
       }
 
-      this.streamer.cache.setCommandCache(this.name, currentCache);
-      
+      // this.streamer.cache.setCommandCache(this.name, currentCache);
+      await this.streamer.bot.db.setCommandPrevious(this.name, currentCache);
+
       return bexxteConfig.quotes[i];
     }
   ),
@@ -387,8 +392,29 @@ const commands = {
     {
       aliases: 'bops'
     }
-  )
+  ),
 
+
+
+  gavel: new TwitchCounterCommand('gavel',
+    {
+      set: evaluation => {
+        if (evaluation.successful) {
+          return `You have set the number of Ace Attorney bops to ${evaluation.endValue} bexxteBonk`;
+        }
+        return `Sorry, I was not able to set Ace Attorney bops to "${evaluation.attempt}". Please make sure you use a number. Currently, chat has been bopped ${evaluation.endValue} times .`;
+      },
+      add: evaluation => {
+        return `Streamer caught simping for Edgeworth again or someone was being too horny for lawyers bexxteBonk Y'all been horny on main (at least) ${evaluation.endValue} times so far for Ace Attorney.`;
+      },
+      show: evaluation => {
+        return `Chat has been horny for Ace Attorney ${evaluation.endValue} times`;
+      }
+    },
+    {
+      aliases: 'gavels'
+    }
+)
   // POSTERITY COMMANDS
 
   //nqny: new TwitchCommand('nqny', "December 30th is Not Quite New Years: Round 3! Starting at 2PM eastern I'll be streaming for twelve hours as a celebration for this past year of streams and party with chat! We've got a bunch of fun planed such as Chat Superlatives, Best & Worst of the Year tier lists, Beating GOTY Elden Ring, Steam Giftcard Giveaways, and more!"),
